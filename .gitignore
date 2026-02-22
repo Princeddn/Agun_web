@@ -38,6 +38,7 @@ yarn-error.log*
 *.swo
 .DS_Store
 Thumbs.db
+.claude/
 
 # ─── Tests ──────────────────────────────────────────────────────────────────
 /test-results/
