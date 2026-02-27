@@ -11,7 +11,8 @@ app = FastAPI(
 # Set up CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=settings.BACKEND_CORS_ORIGINS,
+    #allow_origins=settings.BACKEND_CORS_ORIGINS,
+    allow_origins=["*"], # On remplace par l'étoile '*' qui veut dire TOUT LE MONDE
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -19,6 +20,11 @@ app.add_middleware(
 
 # Include API router
 app.include_router(api_router, prefix=settings.API_V1_STR)
+
+
+@app.get("/test")
+def dit_hello():
+    return {"message": "Bonjour Prince le test fonctionne"}
 
 @app.get("/")
 def root():
