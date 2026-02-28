@@ -9,6 +9,7 @@ router = APIRouter()
 
 # Initialisation du client Supabase
 # C'est notre tuyau de communication entre Python et la base de données Supabase
+from app.services.supabase_service import supabase_service
 supabase: Client = create_client(settings.SUPABASE_URL, settings.SUPABASE_ANON_KEY)
 
 # ============================================================================== 
@@ -25,11 +26,19 @@ class LoginRequest(BaseModel):
 # ==============================================================================
 # Pourquoi "@router.post" ? Car on "ENVOIE" (Post) des informations secrètes. 
 # Si c'était ".get", les mots de passes seraient écrits en clair dans l'URL (catastrophe !).
+from fastapi import Request
+from fastapi.responses import JSONResponse
+import json
+
 @router.post("/login")
 async def login(credentials: LoginRequest):
     """
     Tente de connecter un utilisateur via Supabase.
     """
+    print(f"========== [BACKEND LOG] LOGIN REQUEST ==========")
+    print(f"Email reçu : {credentials.email}")
+    print(f"Mot de passe reçu : {'*' * len(credentials.password) if credentials.password else 'VIDE'}")
+    print(f"=================================================")
     try:
         # On demande à Supabase de tenter la connexion avec les infos reçues
         # .auth.sign_in_with_password() est une fonction magique toute prête de Supabase !
@@ -49,7 +58,7 @@ async def login(credentials: LoginRequest):
                 detail="Erreur lors de la récupération de la session."
             )
 
-        # TOUT EST BON ! 🎉
+        # TOUT EST BON ! 
         # On renvoie à React le précieux Token (access_token)
         return {
             "message": "Connexion réussie",
@@ -94,6 +103,9 @@ async def register(user_data: RegisterRequest):
     """
     Inscrit un nouvel utilisateur via Supabase et lui crée un profil.
     """
+    print(f"========== [BACKEND LOG] REGISTER REQUEST ==========")
+    print(f"Données reçues de React : {user_data.model_dump()}")
+    print(f"====================================================")
     try:
         # 1. Création du compte dans le système d'authentification Supabase
         response = supabase.auth.sign_up({
@@ -115,14 +127,49 @@ async def register(user_data: RegisterRequest):
             }
         })
 
+        # 2. Ajout MANUEL et SECURISE du compte dans ta table publique "users" (que tu peux voir)
+        if response.user:
+            try:
+                # Nous copions les infos dans la grande table visible `public.users`
+                await supabase_service.insert(
+                    table="users",
+                    data={
+                        "id": response.user.id, # On garde le même ID exact que Auth
+                        "email": user_data.email,
+                        "first_name": user_data.firstName,
+                        "last_name": user_data.lastName,
+                        "status": user_data.status,
+                        "nationality": user_data.nationality,
+                        "origin_city": user_data.originCity,
+                        "country": user_data.country,
+                        "city": user_data.city,
+                        "gender": user_data.gender,
+                        "birth_date": user_data.birthDate,
+                        "password_hash": "MANAGED_BY_AUTH", # Comme avant, mais géré par le vrai auth
+                        "role": "user"
+                    },
+                    use_admin=True # Obligatoire pour écrire dans la table protégée
+                )
+                print(f"[BACKEND LOG] L'utilisateur est bien copié dans public.users !")
+            except Exception as db_err:
+                # Si l'utilisateur est déjà là (par exemple via Trigger secret), on ignore gentiment.
+                print(f"[BACKEND WARNING] Insertion dans public.users ignorée ou non requise : {str(db_err)}")
+
         return {
             "message": "Inscription réussie",
             "user_id": response.user.id if response.user else None
         }
 
     except Exception as e:
-        print(f"Erreur d'inscription: {str(e)}")
+        error_msg = str(e)
+        print(f"Erreur d'inscription: {error_msg}")
+        
+        # On traduit l'erreur brute de Supabase en version lisible pour React
+        detail_msg = "Impossible de créer ce compte. L'email est peut-être déjà utilisé."
+        if "User already registered" in error_msg:
+            detail_msg = "Cet email est déjà utilisé. Veuillez vous connecter."
+
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Impossible de créer ce compte. L'email est peut-être déjà utilisé.",
+            detail=detail_msg,
         )

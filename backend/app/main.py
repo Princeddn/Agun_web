@@ -1,4 +1,6 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
+from fastapi.exceptions import RequestValidationError
+from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 from app.api.v1.api import api_router
 from app.core.config import settings
@@ -20,6 +22,20 @@ app.add_middleware(
 
 # Include API router
 app.include_router(api_router, prefix=settings.API_V1_STR)
+
+@app.exception_handler(RequestValidationError)
+async def validation_exception_handler(request: Request, exc: RequestValidationError):
+    # ! LOG EXTRÊMEMENT IMPORTANT POUR DÉBOGUER ! #
+    body = await request.body()
+    print(f"=======================================")
+    print(f"❌ REQUÊTE REFUSÉE PAR LE BACKEND (422) ❌")
+    print(f"Body reçu : {body.decode('utf-8')}")
+    print(f"Détail de l'erreur : {exc.errors()}")
+    print(f"=======================================")
+    return JSONResponse(
+        status_code=422,
+        content={"detail": exc.errors(), "body": body.decode("utf-8")},
+    )
 
 
 @app.get("/test")

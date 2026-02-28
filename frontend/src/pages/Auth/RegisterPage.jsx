@@ -123,7 +123,12 @@ export default function RegisterPage() {
       await registerAction({ ...values, birthDate: values.birthDate || null });
       navigate("/dashboard");
     } catch (error) {
-      setFormError("Une erreur est survenue lors de l'inscription.");
+      // On affiche le message d'erreur détaillé renvoyé par FastAPI !
+      if (error.response?.data?.detail) {
+        setFormError(error.response.data.detail);
+      } else {
+        setFormError("Une erreur est survenue lors de l'inscription.");
+      }
     }
   };
 
@@ -165,224 +170,218 @@ export default function RegisterPage() {
             {/* =========================================
                  ÉTAPE 1 : QUI ÊTES-VOUS ?
                ========================================= */}
-            {step === 1 && (
-              <div className="space-y-6 animate-fade-in">
-                <h2 className="text-xl font-semibold mb-4 border-b pb-2 text-primary">1. Qui êtes-vous ?</h2>
+            <div className={cn("space-y-6 animate-fade-in", step === 1 ? "block" : "hidden")}>
+              <h2 className="text-xl font-semibold mb-4 border-b pb-2 text-primary">1. Qui êtes-vous ?</h2>
 
-                {/* PRÉNOM / NOM */}
-                <div className="grid gap-4 sm:grid-cols-2">
-                  <div className="space-y-2">
-                    <label className="text-sm font-semibold text-foreground/90 ml-1">Prénom <span className="text-red-500">*</span></label>
-                    <UiverseInput placeholder="Awa" {...register("firstName")} />
-                    {errors.firstName && <p className="text-xs text-red-500 ml-1">{errors.firstName.message}</p>}
-                  </div>
-                  <div className="space-y-2">
-                    <label className="text-sm font-semibold text-foreground/90 ml-1">Nom <span className="text-red-500">*</span></label>
-                    <UiverseInput placeholder="Konate" {...register("lastName")} />
-                    {errors.lastName && <p className="text-xs text-red-500 ml-1">{errors.lastName.message}</p>}
-                  </div>
-                </div>
-
-                {/* DATE DE NAISSANCE */}
+              {/* PRÉNOM / NOM */}
+              <div className="grid gap-4 sm:grid-cols-2">
                 <div className="space-y-2">
-                  <label className="text-sm font-semibold text-foreground/90 ml-1">Date de naissance <span className="text-red-500">*</span></label>
-                  <input
-                    type="date"
-                    max={new Date().toISOString().split('T')[0]} // Empêche de choisir le futur
-                    min="1900-01-01"
-                    {...register("birthDate")}
-                    className="w-full h-12 px-4 rounded-xl border-2 border-border focus:border-primary outline-none transition-all bg-background text-foreground text-sm font-medium"
-                  />
-                  {errors.birthDate && <p className="text-xs text-red-500 ml-1">{errors.birthDate.message}</p>}
+                  <label className="text-sm font-semibold text-foreground/90 ml-1">Prénom <span className="text-red-500">*</span></label>
+                  <UiverseInput placeholder="Awa" {...register("firstName")} />
+                  {errors.firstName && <p className="text-xs text-red-500 ml-1">{errors.firstName.message}</p>}
                 </div>
-
-                {/* LE GENRE */}
                 <div className="space-y-2">
-                  <label className="text-sm font-semibold text-foreground/90 ml-1">Genre <span className="text-red-500">*</span></label>
-                  <div className="grid grid-cols-3 gap-2">
-                    {GENDER_OPTIONS.map((option) => (
-                      <label
-                        key={option.value}
-                        className={cn(
-                          "flex cursor-pointer items-center justify-center h-12 rounded-xl border-2 font-medium text-sm transition-all duration-200",
-                          watch("gender") === option.value
-                            ? "border-primary bg-primary/10 text-primary shadow-sm"
-                            : "border-border bg-secondary/50 text-muted-foreground hover:border-border/80 hover:bg-secondary"
-                        )}
-                      >
-                        <input type="radio" value={option.value} {...register("gender")} className="sr-only" />
-                        <span>{option.label}</span>
-                      </label>
-                    ))}
-                  </div>
-                  {errors.gender && <p className="text-xs text-red-500 ml-1">{errors.gender.message}</p>}
-                </div>
-
-                {/* LE STATUT */}
-                <div className="space-y-2">
-                  <label className="text-sm font-semibold text-foreground/90 ml-1">Statut <span className="text-red-500">*</span></label>
-                  <div className="grid grid-cols-3 gap-2">
-                    {STATUS_OPTIONS.map((status) => (
-                      <label
-                        key={status}
-                        className={cn(
-                          "flex cursor-pointer items-center justify-center h-12 rounded-xl border-2 font-medium text-sm transition-all duration-200",
-                          selectedStatus === status
-                            ? "border-primary bg-primary/10 text-primary shadow-sm"
-                            : "border-border bg-secondary/50 text-muted-foreground hover:border-border/80 hover:bg-secondary"
-                        )}
-                      >
-                        <input type="radio" value={status} {...register("status")} className="sr-only" />
-                        <span>{status}</span>
-                      </label>
-                    ))}
-                  </div>
-                  {errors.status && <p className="text-xs text-red-500 ml-1">{errors.status.message}</p>}
-                </div>
-
-                <div className="pt-4">
-                  <Button type="button" onClick={nextStep} className="w-full text-lg shadow-md" size="lg">
-                    Suivant →
-                  </Button>
+                  <label className="text-sm font-semibold text-foreground/90 ml-1">Nom <span className="text-red-500">*</span></label>
+                  <UiverseInput placeholder="Konate" {...register("lastName")} />
+                  {errors.lastName && <p className="text-xs text-red-500 ml-1">{errors.lastName.message}</p>}
                 </div>
               </div>
-            )}
+
+              {/* DATE DE NAISSANCE */}
+              <div className="space-y-2">
+                <label className="text-sm font-semibold text-foreground/90 ml-1">Date de naissance <span className="text-red-500">*</span></label>
+                <input
+                  type="date"
+                  max={new Date().toISOString().split('T')[0]} // Empêche de choisir le futur
+                  min="1900-01-01"
+                  {...register("birthDate")}
+                  className="w-full h-12 px-4 rounded-xl border-2 border-border focus:border-primary outline-none transition-all bg-background text-foreground text-sm font-medium"
+                />
+                {errors.birthDate && <p className="text-xs text-red-500 ml-1">{errors.birthDate.message}</p>}
+              </div>
+
+              {/* LE GENRE */}
+              <div className="space-y-2">
+                <label className="text-sm font-semibold text-foreground/90 ml-1">Genre <span className="text-red-500">*</span></label>
+                <div className="grid grid-cols-3 gap-2">
+                  {GENDER_OPTIONS.map((option) => (
+                    <label
+                      key={option.value}
+                      className={cn(
+                        "flex cursor-pointer items-center justify-center h-12 rounded-xl border-2 font-medium text-sm transition-all duration-200",
+                        watch("gender") === option.value
+                          ? "border-primary bg-primary/10 text-primary shadow-sm"
+                          : "border-border bg-secondary/50 text-muted-foreground hover:border-border/80 hover:bg-secondary"
+                      )}
+                    >
+                      <input type="radio" value={option.value} {...register("gender")} className="sr-only" />
+                      <span>{option.label}</span>
+                    </label>
+                  ))}
+                </div>
+                {errors.gender && <p className="text-xs text-red-500 ml-1">{errors.gender.message}</p>}
+              </div>
+
+              {/* LE STATUT */}
+              <div className="space-y-2">
+                <label className="text-sm font-semibold text-foreground/90 ml-1">Statut <span className="text-red-500">*</span></label>
+                <div className="grid grid-cols-3 gap-2">
+                  {STATUS_OPTIONS.map((status) => (
+                    <label
+                      key={status}
+                      className={cn(
+                        "flex cursor-pointer items-center justify-center h-12 rounded-xl border-2 font-medium text-sm transition-all duration-200",
+                        selectedStatus === status
+                          ? "border-primary bg-primary/10 text-primary shadow-sm"
+                          : "border-border bg-secondary/50 text-muted-foreground hover:border-border/80 hover:bg-secondary"
+                      )}
+                    >
+                      <input type="radio" value={status} {...register("status")} className="sr-only" />
+                      <span>{status}</span>
+                    </label>
+                  ))}
+                </div>
+                {errors.status && <p className="text-xs text-red-500 ml-1">{errors.status.message}</p>}
+              </div>
+
+              <div className="pt-4">
+                <Button type="button" onClick={nextStep} className="w-full text-lg shadow-md" size="lg">
+                  Suivant →
+                </Button>
+              </div>
+            </div>
 
 
             {/* =========================================
                  ÉTAPE 2 : D'OÙ VENEZ-VOUS ?
                ========================================= */}
-            {step === 2 && (
-              <div className="space-y-6 animate-fade-in">
-                <h2 className="text-xl font-semibold mb-4 border-b pb-2 text-primary">2. Vos origines</h2>
+            <div className={cn("space-y-6 animate-fade-in", step === 2 ? "block" : "hidden")}>
+              <h2 className="text-xl font-semibold mb-4 border-b pb-2 text-primary">2. Vos origines</h2>
 
-                {/* LA NATIONALITÉ */}
-                <div className="space-y-2">
-                  <label className="text-sm font-semibold text-foreground/90 ml-1">Nationalité <span className="text-red-500">*</span></label>
-                  <CountrySelect
-                    value={selectedNationality}
-                    onChange={(value) => {
-                      setValue("nationality", value, { shouldValidate: true });
-                      if (value !== selectedNationality) {
-                        const nextOriginCities = CITIES
-                          .filter((city) => city.countryId === value)
-                          .sort((a, b) => a.name.localeCompare(b.name, "fr", { sensitivity: "base" }));
-                        setValue("originCity", nextOriginCities[0]?.id ?? "", { shouldValidate: true });
-                      }
-                    }}
-                    countries={NATIONALITIES}
-                    placeholder="Choisis ta nationalité"
-                  />
-                  {errors.nationality && <p className="text-xs text-red-500 ml-1">{errors.nationality.message}</p>}
-                </div>
-
-                {/* VILLE D'ORIGINE */}
-                <div className="space-y-2">
-                  <label className="text-sm font-semibold text-foreground/90 ml-1">Ville d'origine <span className="text-red-500">*</span></label>
-                  <CitySelect
-                    value={selectedOriginCity}
-                    onChange={(value) => setValue("originCity", value, { shouldValidate: true })}
-                    cities={availableOriginCities}
-                    placeholder="Où es-tu né ?"
-                  />
-                  {errors.originCity && <p className="text-xs text-red-500 ml-1">{errors.originCity.message}</p>}
-                </div>
-
-                <h2 className="text-xl font-semibold mb-4 border-b pb-2 pt-6 text-primary">Lieu de résidence actuel</h2>
-
-                {/* PAYS DE RÉSIDENCE */}
-                <div className="space-y-2">
-                  <label className="text-sm font-semibold text-foreground/90 ml-1">Pays de résidence <span className="text-red-500">*</span></label>
-                  <CountrySelect
-                    value={selectedCountry}
-                    onChange={(value) => {
-                      setValue("country", value, { shouldValidate: true });
-                      if (value !== selectedCountry) {
-                        const nextCities = CITIES
-                          .filter((city) => city.countryId === value)
-                          .sort((a, b) => a.name.localeCompare(b.name, "fr", { sensitivity: "base" }));
-                        setValue("city", nextCities[0]?.id ?? "", { shouldValidate: true });
-                      }
-                    }}
-                    countries={HOST_COUNTRIES}
-                    placeholder="Où habites-tu ?"
-                  />
-                  {errors.country && <p className="text-xs text-red-500 ml-1">{errors.country.message}</p>}
-                </div>
-
-                {/* VILLE DE RÉSIDENCE (Dépend de "Pays") */}
-                <div className="space-y-2">
-                  <label className="text-sm font-semibold text-foreground/90 ml-1">Ville de résidence <span className="text-red-500">*</span></label>
-                  <CitySelect
-                    value={selectedCity}
-                    onChange={(value) => setValue("city", value, { shouldValidate: true })}
-                    cities={availableCities}
-                    placeholder="Choisis ta ville de résidence"
-                  />
-                  {errors.city && <p className="text-xs text-red-500 ml-1">{errors.city.message}</p>}
-                </div>
-
-                <div className="flex gap-3 pt-4">
-                  <Button type="button" variant="outline" onClick={prevStep} className="w-1/3" size="lg">
-                    ← Retour
-                  </Button>
-                  <Button type="button" onClick={nextStep} className="w-2/3 text-lg shadow-md" size="lg">
-                    Suivant →
-                  </Button>
-                </div>
+              {/* LA NATIONALITÉ */}
+              <div className="space-y-2">
+                <label className="text-sm font-semibold text-foreground/90 ml-1">Nationalité <span className="text-red-500">*</span></label>
+                <CountrySelect
+                  value={selectedNationality}
+                  onChange={(value) => {
+                    setValue("nationality", value, { shouldValidate: true });
+                    if (value !== selectedNationality) {
+                      const nextOriginCities = CITIES
+                        .filter((city) => city.countryId === value)
+                        .sort((a, b) => a.name.localeCompare(b.name, "fr", { sensitivity: "base" }));
+                      setValue("originCity", nextOriginCities[0]?.id ?? "", { shouldValidate: true });
+                    }
+                  }}
+                  countries={NATIONALITIES}
+                  placeholder="Choisis ta nationalité"
+                />
+                {errors.nationality && <p className="text-xs text-red-500 ml-1">{errors.nationality.message}</p>}
               </div>
-            )}
+
+              {/* VILLE D'ORIGINE */}
+              <div className="space-y-2">
+                <label className="text-sm font-semibold text-foreground/90 ml-1">Ville d'origine <span className="text-red-500">*</span></label>
+                <CitySelect
+                  value={selectedOriginCity}
+                  onChange={(value) => setValue("originCity", value, { shouldValidate: true })}
+                  cities={availableOriginCities}
+                  placeholder="Où es-tu né ?"
+                />
+                {errors.originCity && <p className="text-xs text-red-500 ml-1">{errors.originCity.message}</p>}
+              </div>
+
+              <h2 className="text-xl font-semibold mb-4 border-b pb-2 pt-6 text-primary">Lieu de résidence actuel</h2>
+
+              {/* PAYS DE RÉSIDENCE */}
+              <div className="space-y-2">
+                <label className="text-sm font-semibold text-foreground/90 ml-1">Pays de résidence <span className="text-red-500">*</span></label>
+                <CountrySelect
+                  value={selectedCountry}
+                  onChange={(value) => {
+                    setValue("country", value, { shouldValidate: true });
+                    if (value !== selectedCountry) {
+                      const nextCities = CITIES
+                        .filter((city) => city.countryId === value)
+                        .sort((a, b) => a.name.localeCompare(b.name, "fr", { sensitivity: "base" }));
+                      setValue("city", nextCities[0]?.id ?? "", { shouldValidate: true });
+                    }
+                  }}
+                  countries={HOST_COUNTRIES}
+                  placeholder="Où habites-tu ?"
+                />
+                {errors.country && <p className="text-xs text-red-500 ml-1">{errors.country.message}</p>}
+              </div>
+
+              {/* VILLE DE RÉSIDENCE (Dépend de "Pays") */}
+              <div className="space-y-2">
+                <label className="text-sm font-semibold text-foreground/90 ml-1">Ville de résidence <span className="text-red-500">*</span></label>
+                <CitySelect
+                  value={selectedCity}
+                  onChange={(value) => setValue("city", value, { shouldValidate: true })}
+                  cities={availableCities}
+                  placeholder="Choisis ta ville de résidence"
+                />
+                {errors.city && <p className="text-xs text-red-500 ml-1">{errors.city.message}</p>}
+              </div>
+
+              <div className="flex gap-3 pt-4">
+                <Button type="button" variant="outline" onClick={prevStep} className="w-1/3" size="lg">
+                  ← Retour
+                </Button>
+                <Button type="button" onClick={nextStep} className="w-2/3 text-lg shadow-md" size="lg">
+                  Suivant →
+                </Button>
+              </div>
+            </div>
 
 
             {/* =========================================
                  ÉTAPE 3 : IDENTIFIANTS
                ========================================= */}
-            {step === 3 && (
-              <div className="space-y-6 animate-fade-in">
-                <h2 className="text-xl font-semibold mb-4 border-b pb-2 text-primary">3. Vos identifiants</h2>
+            <div className={cn("space-y-6 animate-fade-in", step === 3 ? "block" : "hidden")}>
+              <h2 className="text-xl font-semibold mb-4 border-b pb-2 text-primary">3. Vos identifiants</h2>
 
-                {/* EMAIL */}
-                <div className="space-y-2">
-                  <label className="text-sm font-semibold text-foreground/90 ml-1">Email <span className="text-red-500">*</span></label>
-                  <UiverseInput placeholder="awa@agun.app" type="email" {...register("email")} />
-                  {errors.email && <p className="text-xs text-red-500 ml-1">{errors.email.message}</p>}
-                </div>
-
-                {/* MOT DE PASSE */}
-                <div className="space-y-2">
-                  <label className="text-sm font-semibold text-foreground/90 ml-1">Mot de passe <span className="text-red-500">*</span></label>
-                  <PasswordInput placeholder="********" {...register("password")} />
-                  {errors.password && <p className="text-xs text-red-500 ml-1">{errors.password.message}</p>}
-                </div>
-
-                {/* CONFIRMATION */}
-                <div className="space-y-2">
-                  <label className="text-sm font-semibold text-foreground/90 ml-1">Confirmer mot de passe <span className="text-red-500">*</span></label>
-                  <PasswordInput placeholder="********" {...register("confirmPassword")} />
-                  {errors.confirmPassword && <p className="text-xs text-red-500 ml-1">{errors.confirmPassword.message}</p>}
-                </div>
-
-                {formError && (
-                  <div className="p-4 rounded-xl bg-red-500/10 border border-red-500/20 text-red-600 text-sm font-medium animate-fade-in">
-                    {formError}
-                  </div>
-                )}
-
-                <div className="flex gap-3 pt-4">
-                  <Button type="button" variant="outline" onClick={prevStep} className="w-1/3" size="lg">
-                    ← Retour
-                  </Button>
-                  <Button
-                    type="submit"
-                    size="lg"
-                    className="w-2/3 text-lg font-bold shadow-xl shadow-primary/20"
-                    isLoading={isSubmitting}
-                  >
-                    {isSubmitting ? "Création..." : "Terminer 🎉"}
-                  </Button>
-                </div>
+              {/* EMAIL */}
+              <div className="space-y-2">
+                <label className="text-sm font-semibold text-foreground/90 ml-1">Email <span className="text-red-500">*</span></label>
+                <UiverseInput placeholder="awa@agun.app" type="email" {...register("email")} />
+                {errors.email && <p className="text-xs text-red-500 ml-1">{errors.email.message}</p>}
               </div>
-            )}
+
+              {/* MOT DE PASSE */}
+              <div className="space-y-2">
+                <label className="text-sm font-semibold text-foreground/90 ml-1">Mot de passe <span className="text-red-500">*</span></label>
+                <PasswordInput placeholder="********" {...register("password")} />
+                {errors.password && <p className="text-xs text-red-500 ml-1">{errors.password.message}</p>}
+              </div>
+
+              {/* CONFIRMATION */}
+              <div className="space-y-2">
+                <label className="text-sm font-semibold text-foreground/90 ml-1">Confirmer mot de passe <span className="text-red-500">*</span></label>
+                <PasswordInput placeholder="********" {...register("confirmPassword")} />
+                {errors.confirmPassword && <p className="text-xs text-red-500 ml-1">{errors.confirmPassword.message}</p>}
+              </div>
+
+              {formError && (
+                <div className="p-4 rounded-xl bg-red-500/10 border border-red-500/20 text-red-600 text-sm font-medium animate-fade-in">
+                  {formError}
+                </div>
+              )}
+
+              <div className="flex gap-3 pt-4">
+                <Button type="button" variant="outline" onClick={prevStep} className="w-1/3" size="lg">
+                  ← Retour
+                </Button>
+                <Button
+                  type="submit"
+                  size="lg"
+                  className="w-2/3 text-lg font-bold shadow-xl shadow-primary/20"
+                  isLoading={isSubmitting}
+                >
+                  {isSubmitting ? "Création..." : "Terminer 🎉"}
+                </Button>
+              </div>
+            </div>
 
           </form>
 
