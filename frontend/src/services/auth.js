@@ -2,19 +2,13 @@ import api from './api';
 
 export const authService = {
   async login(email, password) {
-    const params = new URLSearchParams({ username: email, password });
-    const { data } = await api.post('/auth/login', params, {
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    });
+    // On envoie un simple objet JSON avec email et password (Comme attendu par FastAPI LoginRequest)
+    const { data } = await api.post('/auth/login', { email, password });
     return data;
   },
 
-  async register(email, password, fullName) {
-    const { data } = await api.post('/auth/register', {
-      email,
-      password,
-      full_name: fullName,
-    });
+  async register(userData) {
+    const { data } = await api.post('/auth/register', userData);
     return data;
   },
 

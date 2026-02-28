@@ -1,8 +1,23 @@
 /** @type {import('tailwindcss').Config} */
+
+/* ==========================================================================
+   LE TRADUCTEUR TAILWIND ⚙️
+   Ce fichier est extrêmement important. Tailwind lit ce fichier en premier
+   pour savoir "Quels mots-clés de design je dois construire ?".
+   C'est ici qu'on fait le lien entre les variables de index.css et nos classes React.
+   ========================================================================== */
+
 module.exports = {
+  // 🌙 MODE SOMBRE : "class" veut dire que le mode sombre s'active uniquement 
+  // si on ajoute `<html class="dark">`. Ça ne se met plus "tout seul" en noir.
   darkMode: ["class"],
+
+  // 📝 OÙ SONT MES FICHIERS ? Tailwind doit savoir où chercher. 
+  // Il va lire tous les fichiers qui finissent en .js et .jsx dans le dossier src/
   content: ["./src/**/*.{js,jsx}"],
+
   theme: {
+    // 📦 CONTENEUR : Définit qu'une "div container" est toujours centrée avec des marges.
     container: {
       center: true,
       padding: "2rem",
@@ -10,18 +25,31 @@ module.exports = {
         "2xl": "1400px",
       },
     },
+
+    // 🌟 EXTEND (AJOUTS PERSONNALISES) : On ne supprime pas les bases de Tailwind.
+    // On vient "Étendre" (rajouter) nos propres trucs par dessus.
     extend: {
+
+      // ✍️ 1. NOS POLICES DE CARACTERES
+      // Permet d'écrire `font-display` pour avoir l'Outfit, ou `font-body` pour l'Inter.
       fontFamily: {
         display: ['Outfit', 'sans-serif'],
         body: ['Inter', 'sans-serif'],
         african: ['African', 'sans-serif'],
       },
+
+      // 🎨 2. NOS COULEURS
+      // Tu vois ces `hsl(var(--background))` ? 
+      // C'est ce qui fait le lien avec notre fichier `index.css`.
+      // Ça dit à Tailwind : "Quand le codeur tape 'bg-background', va chercher la valeur CSS '--background'".
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
+
+        // Sous-couleurs : `bg-primary` utilise DEFAULT, mais `text-primary-foreground` utilise "foreground"
         primary: {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",
@@ -66,11 +94,18 @@ module.exports = {
           border: "hsl(var(--glass-border))",
         },
       },
+
+      // 🔲 3. NOS ARRONDIS (Border Radius)
+      // Permet d'écrire `rounded-lg` et que Tailwind aille chercher la taille choisie dans index.css
       borderRadius: {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
       },
+
+      // 🎬 4. ETAPES D'ANIMATIONS (Keyframes)
+      // On apprend à Tailwind comment bouger les choses. 
+      // Ex: "slideUp" = Partir vers le bas avec opacité zero (from), puis remonter au centre et devenir visible (to)
       keyframes: {
         "accordion-down": {
           from: { height: "0" },
@@ -93,6 +128,10 @@ module.exports = {
           to: { opacity: "1", transform: "scale(1)" },
         },
       },
+
+      // ⚡ 5. CLASSES D'ANIMATIONS (Animation)
+      // C'est ce qu'on écrit vraiment dans React ! 
+      // Ex: Lorsqu'on tape `animate-fade-in` sur une div, il regarde en haut et lance "fadeIn" pendant "0.6s" (secondes) avec l'effet fluide "ease-out"
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
@@ -102,5 +141,9 @@ module.exports = {
       },
     }
   },
+
+  // 🔌 6. PLUGINS FINAUX
+  // Des super-pouvoirs officiels créés par l'équipe Tailwind.
+  // Ici `tailwindcss-animate` permet d'animer les choses beaucoup plus facilement.
   plugins: [require("tailwindcss-animate")],
 }

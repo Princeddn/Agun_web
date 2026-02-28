@@ -15,7 +15,7 @@ class Settings(BaseSettings):
     
     # Supabase Configuration
     SUPABASE_URL: str
-    SUPABASE_KEY: str  # anon/public key
+    SUPABASE_ANON_KEY: str  # anon/public key
     SUPABASE_SERVICE_KEY: str  # service role key (for admin operations)
     SUPABASE_JWT_SECRET: str  # JWT secret for verifying tokens
     

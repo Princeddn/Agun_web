@@ -2,100 +2,173 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ==========================================================================
+   AGUN DESIGN SYSTEM - THEMES 🎨
+   Ce fichier contient toutes les couleurs "faites maison" du projet. 
+   Au lieu d'utiliser les couleurs par défaut de Tailwind, on définit les nôtres.
+   ========================================================================== */
+
 @layer base {
+
+  /* 
+   * THEME CLAIR (Par défaut sur :root) ☀️
+   * :root représente la racine de notre site web. 
+   * Toutes les couleurs ici sont adaptées pour un affichage sur fond blanc. 
+   */
   :root {
-    --background:        224 30% 8%;
-    --foreground:        210 40% 96%;
+    --background: 0 0% 98%;
+    /* Fond principal de la page (blanc très très légèrement gris) */
+    --foreground: 222 47% 11%;
+    /* Texte principal (bleu marin très foncé, presque noir) */
 
-    --card:              224 28% 12%;
-    --card-foreground:   210 40% 96%;
-    --card-glass:        224 28% 14%;
+    --card: 0 0% 100%;
+    /* Fond pour les "cartes" (ex: témoignages) = Blanc pur */
+    --card-foreground: 222 47% 11%;
+    /* Texte à l'intérieur des cartes */
+    --card-glass: 0 0% 97%;
 
-    --popover:           224 28% 11%;
-    --popover-foreground: 210 40% 96%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
 
-    --primary:           25 96% 55%;
+    /* La couleur principale identitaire du site (Orange "AGUN") */
+    --primary: 25 95% 53%;
+    /* Orange vif */
     --primary-foreground: 0 0% 100%;
-    --primary-glow:      25 96% 62%;
-    --primary-dark:      25 96% 44%;
+    /* Texte écrit sur fond orange (blanc) */
+    --primary-glow: 25 95% 60%;
+    --primary-dark: 25 95% 45%;
 
-    --secondary:         224 28% 17%;
-    --secondary-foreground: 210 30% 90%;
+    --secondary: 220 14% 94%;
+    /* Gris clair pour les éléments de fond secondaires */
+    --secondary-foreground: 222 47% 11%;
 
-    --muted:             224 28% 15%;
-    --muted-foreground:  217 20% 55%;
+    --muted: 220 14% 96%;
+    /* Gris très clair (ex: boutons annulés) */
+    --muted-foreground: 215 16% 47%;
+    /* Texte secondaire grisé (moins important) */
 
-    --accent:            224 28% 19%;
-    --accent-foreground: 25 96% 60%;
+    --accent: 220 14% 94%;
+    --accent-foreground: 25 95% 50%;
 
-    --destructive:       0 84% 60%;
+    --destructive: 0 84% 60%;
+    /* Rouge pour les erreurs/boutons supprimer */
     --destructive-foreground: 0 0% 100%;
-    --success:           142 72% 42%;
+
+    --success: 142 76% 36%;
+    /* Vert pour le succès */
     --success-foreground: 0 0% 100%;
-    --warning:           38 92% 50%;
+
+    --warning: 38 92% 50%;
+    /* Jaune pour les alertes */
     --warning-foreground: 0 0% 100%;
 
-    --border:            224 28% 22%;
-    --input:             224 28% 16%;
-    --ring:              25 96% 55%;
+    --border: 220 13% 87%;
+    /* Couleur des bordures grises */
+    --input: 220 13% 91%;
+    /* Fond des champs de texte */
+    --ring: 25 95% 53%;
+    /* Couleur du halo quand on clique (Orange) */
 
-    --glass-bg:          224 28% 13%;
-    --glass-border:      224 28% 28%;
+    /* Effet de "verre" (Glassmorphism) */
+    --glass-bg: 0 0% 100%;
+    /* Le fond de notre verre est blanc */
+    --glass-border: 220 13% 87%;
 
-    --gradient-primary: linear-gradient(135deg, hsl(25 96% 55%), hsl(25 96% 68%));
-    --gradient-dark:    linear-gradient(180deg, hsl(224 30% 8%), hsl(224 30% 11%));
-    --gradient-glow:    radial-gradient(circle at center, hsl(25 96% 55% / 0.18), transparent 70%);
+    /* Dégradés personnalisés */
+    --gradient-primary: linear-gradient(135deg, hsl(25 95% 53%), hsl(25 95% 63%));
+    --gradient-dark: linear-gradient(180deg, hsl(0 0% 98%), hsl(0 0% 95%));
+    --gradient-glow: radial-gradient(circle at center, hsl(25 95% 53% / 0.1), transparent 70%);
 
-    --shadow-sm:   0 2px 8px  hsl(224 40% 4% / 0.5);
-    --shadow-md:   0 4px 20px hsl(224 40% 4% / 0.6);
-    --shadow-lg:   0 8px 40px hsl(224 40% 4% / 0.7);
-    --shadow-glow: 0 0 56px  hsl(25 96% 55% / 0.28);
+    /* Ombres personnalisées pour donner de la profondeur */
+    --shadow-sm: 0 1px 3px hsl(0 0% 0% / 0.08);
+    /* Petite ombre */
+    --shadow-md: 0 4px 12px hsl(0 0% 0% / 0.1);
+    /* Ombre moyenne */
+    --shadow-lg: 0 8px 24px hsl(0 0% 0% / 0.12);
+    /* Grosse ombre */
+    --shadow-glow: 0 0 48px hsl(25 95% 53% / 0.15);
+    /* Ombre luisante orange */
 
-    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    --transition-bounce: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-
+    color-scheme: light;
+    /* Indique au navigateur d'utiliser le mode "clair" pour la scrollbar etc. */
     --radius: 0.875rem;
+    /* Arrondi global des bords (14px) */
+  }
+
+  /* 
+   * THEME SOMBRE (Dark Mode) 🌙
+   * S'active quand un parent possède l'attribut data-theme="dark" ou class="dark"
+   */
+  .dark {
+    --background: 224 30% 8%;
+    --foreground: 210 40% 96%;
+    --card: 224 28% 12%;
+    --card-foreground: 210 40% 96%;
+    --glass-bg: 224 28% 13%;
+    --glass-border: 224 28% 28%;
+    --border: 224 28% 22%;
+    --muted-foreground: 217 20% 55%;
 
     color-scheme: dark;
   }
 }
 
+/* ==========================================================================
+   AGUN DESIGN SYSTEM - CLASSES DE BASE 🛠️
+   ========================================================================== */
 @layer base {
   * {
+    /* Automatiquement, chaque bordure utilisera la couleur "border" de notre thème */
     @apply border-border;
   }
+
   body {
+    /* On applique le fond (background) et la couleur de texte (foreground) de notre thème */
+    /* antialiased: rend les textes plus lisses/nets sur certains écrans */
     @apply bg-background text-foreground antialiased;
   }
 }
 
+/* ==========================================================================
+   AGUN DESIGN SYSTEM - UTILITAIRES CSS & AMELIORATIONS 🪄
+   ========================================================================== */
 @layer utilities {
+
+  /* La classe ".glass" fait cet effet miroir semi-transparent (glassmorphism) */
   .glass {
     background: hsl(var(--glass-bg) / 0.6);
+    /* Fond semi-transparent */
     backdrop-filter: blur(20px) saturate(180%);
+    /* Floute ce qui est derriere, et le rend plus vif */
     border: 1px solid hsl(var(--glass-border) / 0.3);
     box-shadow: var(--shadow-md);
   }
 
+  /* Même chose mais avec un effet quand on passe la souris dessus */
   .glass-hover {
     @apply glass transition-all duration-300;
   }
 
   .glass-hover:hover {
     background: hsl(var(--glass-bg) / 0.8);
-    border-color: hsl(var(--glass-border) / 0.5);
     transform: translateY(-2px);
+    /* Se soulève légèrement */
     box-shadow: var(--shadow-lg);
+    /* L'ombre grandit */
   }
 
+  /* Utilitaire pour mettre un dégradé de couleur SUR le texte ! */
   .gradient-text {
     background: var(--gradient-primary);
+    /* Fond orange dégradé */
     -webkit-background-clip: text;
+    /* Applique le fond UNIQUEMENT sur la forme des lettres */
     -webkit-text-fill-color: transparent;
+    /* Rend le texte lui-même transparent (on voit le fond à travers) */
     background-clip: text;
-    filter: drop-shadow(0 0 8px hsl(25 95% 55% / 0.3));
   }
 
+  /* Classes pour appeler nos animations */
   .animate-fade-in {
     animation: fadeIn 0.6s ease-out;
   }
@@ -107,28 +180,47 @@
   .animate-scale-in {
     animation: scaleIn 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
   }
-
-  .scrollbar-hide {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-  }
-
-  .scrollbar-hide::-webkit-scrollbar {
-    display: none;
-  }
 }
 
+/* ==========================================================================
+   AGUN DESIGN SYSTEM - DEFINITIONS DES ANIMATIONS 🎬
+   ========================================================================== */
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes slideUp {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  /* Démarre vers le bas */
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Remonte à sa place initiale */
 }
 
 @keyframes scaleIn {
-  from { opacity: 0; transform: scale(0.9); }
-  to { opacity: 1; transform: scale(1); }
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+
+  /* Démarre un peu plus petit */
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  /* Grossit jusqu'à sa taille normale */
 }

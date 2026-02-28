@@ -23,15 +23,22 @@ export function AuthProvider({ children }) {
   useEffect(() => { loadUser(); }, [loadUser]);
 
   const login = async (email, password) => {
+    // 1. Appel au backend FastAPI ! 
     const data = await authService.login(email, password);
+
+    // 2. On range le précieux token
     localStorage.setItem('access_token', data.access_token);
-    const me = await authService.getMe();
-    setUser(me);
-    return me;
+
+    // 3. (Gros FIX) Pour le moment, on créé l'utilisateur 'artificiellement' 
+    // afin qu'il puisse au moins entrer dans l'application sans que getMe() ne crashe le flux. 
+    const loggedUser = { id: data.user_id, email: email };
+    setUser(loggedUser);
+
+    return loggedUser;
   };
 
-  const register = async (email, password, fullName) => {
-    const data = await authService.register(email, password, fullName);
+  const register = async (userData) => {
+    const data = await authService.register(userData);
     return data;
   };
 
