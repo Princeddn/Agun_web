@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="450" height="882" xmlns="http://www.w3.org/2000/svg"
+     font-family="'Helvetica Neue', Helvetica, Arial, sans-serif"
+     text-rendering="geometricPrecision">
+  <defs>
+    <clipPath id="phone">
+      <rect x="37" y="34" width="375" height="812" rx="32"/>
+    </clipPath>
+  </defs>
+
+  <rect width="450" height="882" fill="#e8edf2"/>
+  <text x="225" y="20" text-anchor="middle" font-size="11" fill="#6b7280" font-weight="600" letter-spacing="1">MESSAGERIE — CONVERSATION</text>
+
+  <rect x="41" y="38" width="375" height="812" rx="32" fill="#000" opacity="0.10"/>
+  <rect x="37" y="34" width="375" height="812" rx="32" fill="#eff6ff" stroke="#1f2937" stroke-width="2.5"/>
+
+  <g clip-path="url(#phone)">
+
+    <!-- STATUS BAR -->
+    <rect x="37" y="34" width="375" height="44" fill="#3b82f6"/>
+    <text x="58" y="61" font-size="12" font-weight="700" fill="#ffffff">9:41</text>
+    <rect x="374" y="48" width="22" height="11" rx="2" fill="none" stroke="#ffffff" stroke-width="1.5"/>
+    <rect x="375.5" y="49.5" width="17" height="8" rx="1.5" fill="#ffffff"/>
+    <rect x="396" y="51" width="2.5" height="5" rx="1" fill="#ffffff"/>
+    <circle cx="352" cy="55" r="2.5" fill="#ffffff"/>
+    <circle cx="360" cy="55" r="2.5" fill="#ffffff"/>
+    <circle cx="368" cy="55" r="2.5" fill="#ffffff"/>
+
+    <!-- CHAT HEADER -->
+    <rect x="37" y="78" width="375" height="64" fill="#3b82f6"/>
+    <text x="62" y="114" font-size="22" fill="#ffffff">&#8592;</text>
+    <!-- Avatar -->
+    <circle cx="102" cy="110" r="22" fill="#fca5a5" stroke="#ffffff" stroke-width="2"/>
+    <text x="102" y="117" font-size="14" font-weight="800" fill="#7f1d1d" text-anchor="middle">FK</text>
+    <!-- Online dot -->
+    <circle cx="118" cy="126" r="7" fill="#22c55e" stroke="#3b82f6" stroke-width="2"/>
+    <!-- Name + status -->
+    <text x="132" y="105" font-size="15" font-weight="700" fill="#ffffff">Fatoumata Koné</text>
+    <text x="132" y="122" font-size="11" fill="#bfdbfe">En ligne ●</text>
+    <!-- Menu -->
+    <text x="400" y="114" font-size="20" fill="#ffffff" text-anchor="middle">&#8942;</text>
+
+    <!-- MESSAGES AREA background -->
+    <rect x="37" y="142" width="375" height="628" fill="#eff6ff"/>
+
+    <!-- Date separator -->
+    <text x="225" y="168" font-size="11" fill="#9ca3af" text-anchor="middle">Mercredi 14 Mai 2026</text>
+
+    <!-- RECEIVED MESSAGE 1 -->
+    <circle cx="64" cy="206" r="18" fill="#fca5a5"/>
+    <text x="64" y="212" font-size="10" font-weight="700" fill="#7f1d1d" text-anchor="middle">FK</text>
+    <rect x="90" y="186" width="220" height="52" rx="16" rx2="4" fill="#ffffff" stroke="#e5e7eb" stroke-width="1"/>
+    <!-- Message bubble pointed corner -->
+    <polygon points="90,210 80,216 90,216" fill="#ffffff"/>
+    <text x="106" y="207" font-size="12.5" fill="#111827">Salut ! J'ai vu ton post sur</text>
+    <text x="106" y="224" font-size="12.5" fill="#111827">les démarches CAF 👏</text>
+    <text x="106" y="248" font-size="10" fill="#9ca3af">09:14</text>
+
+    <!-- RECEIVED MESSAGE 2 -->
+    <circle cx="64" cy="276" r="18" fill="#fca5a5"/>
+    <text x="64" y="282" font-size="10" font-weight="700" fill="#7f1d1d" text-anchor="middle">FK</text>
+    <rect x="90" y="256" width="234" height="52" rx="16" fill="#ffffff" stroke="#e5e7eb" stroke-width="1"/>
+    <polygon points="90,280 80,286 90,286" fill="#ffffff"/>
+    <text x="106" y="277" font-size="12.5" fill="#111827">Tu aurais des conseils pour</text>
+    <text x="106" y="294" font-size="12.5" fill="#111827">trouver une mutuelle ?</text>
+    <text x="106" y="318" font-size="10" fill="#9ca3af">09:15</text>
+
+    <!-- SENT MESSAGE -->
+    <rect x="160" y="336" width="222" height="68" rx="16" fill="#3b82f6"/>
+    <!-- Bubble corner -->
+    <polygon points="382,360 392,366 382,366" fill="#3b82f6"/>
+    <text x="176" y="357" font-size="12.5" fill="#ffffff">Oui bien sûr ! Voici 3 options</text>
+    <text x="176" y="374" font-size="12.5" fill="#ffffff">qui marchent bien selon ta</text>
+    <text x="176" y="391" font-size="12.5" fill="#ffffff">situation…</text>
+    <!-- Time + read receipt -->
+    <text x="382" y="414" font-size="10" fill="#6b7280" text-anchor="end">09:32</text>
+    <text x="382" y="426" font-size="10" fill="#3b82f6" text-anchor="end">&#10003;&#10003; Lu</text>
+
+    <!-- RECEIVED MESSAGE 3 -->
+    <circle cx="64" cy="456" r="18" fill="#fca5a5"/>
+    <text x="64" y="462" font-size="10" font-weight="700" fill="#7f1d1d" text-anchor="middle">FK</text>
+    <rect x="90" y="436" width="200" height="52" rx="16" fill="#ffffff" stroke="#e5e7eb" stroke-width="1"/>
+    <polygon points="90,460 80,466 90,466" fill="#ffffff"/>
+    <text x="106" y="457" font-size="12.5" fill="#111827">Merci beaucoup ! Tu es</text>
+    <text x="106" y="474" font-size="12.5" fill="#111827">vraiment trop sympa &#128591;</text>
+    <text x="106" y="498" font-size="10" fill="#9ca3af">14:23</text>
+
+    <!-- TYPING INDICATOR -->
+    <circle cx="64" cy="534" r="18" fill="#fca5a5"/>
+    <text x="64" y="540" font-size="10" font-weight="700" fill="#7f1d1d" text-anchor="middle">FK</text>
+    <rect x="90" y="518" width="70" height="32" rx="16" fill="#ffffff" stroke="#e5e7eb" stroke-width="1"/>
+    <polygon points="90,534 80,540 90,540" fill="#ffffff"/>
+    <!-- Three animated dots (static representation) -->
+    <circle cx="112" cy="534" r="4" fill="#9ca3af"/>
+    <circle cx="125" cy="534" r="4" fill="#6b7280"/>
+    <circle cx="138" cy="534" r="4" fill="#374151"/>
+    <text x="104" y="572" font-size="10" fill="#9ca3af">En train d'écrire…</text>
+
+    <!-- INPUT BAR -->
+    <rect x="37" y="770" width="375" height="76" fill="#ffffff" stroke="#e5e7eb" stroke-width="1"/>
+    <rect x="37" y="812" width="375" height="34" fill="#ffffff"/>
+    <!-- Attachment icon -->
+    <circle cx="64" cy="800" r="16" fill="#f1f5f9"/>
+    <text x="64" y="805" font-size="16" fill="#6b7280" text-anchor="middle">&#128247;</text>
+    <!-- Text input -->
+    <rect x="86" y="786" width="254" height="30" rx="15" fill="#f9fafb" stroke="#e5e7eb" stroke-width="1.5"/>
+    <text x="104" y="806" font-size="12" fill="#9ca3af">Écrire un message…</text>
+    <!-- Emoji icon -->
+    <circle cx="354" cy="800" r="16" fill="#f1f5f9"/>
+    <text x="354" y="806" font-size="16" fill="#6b7280" text-anchor="middle">&#9786;</text>
+    <!-- Send button -->
+    <circle cx="394" cy="800" r="18" fill="#3b82f6"/>
+    <text x="394" y="806" font-size="16" fill="#ffffff" text-anchor="middle">&#10148;</text>
+
+  </g>
+
+  <rect x="37" y="34" width="375" height="812" rx="32" fill="none" stroke="#1f2937" stroke-width="2.5"/>
+</svg>

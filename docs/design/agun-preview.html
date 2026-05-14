@@ -1,0 +1,1187 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Agun — Design Preview</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;0,9..144,700;1,9..144,400&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+/* ── DESIGN TOKENS ───────────────────────────────────────────── */
+:root {
+  --terra:       #C75E38;
+  --terra-hover: #A84B28;
+  --terra-200:   #F0C4B0;
+  --terra-100:   #FDE8DE;
+  --saffron:     #E8A020;
+  --saffron-100: #FEF3D0;
+  --forest:      #2D6A4F;
+  --forest-100:  #D1EAE0;
+  --violet:      #6D28D9;
+  --violet-100:  #EDE9FE;
+  --cream:       #FBF7F2;
+  --cream-200:   #EDE4D8;
+  --brown-900:   #1C1009;
+  --brown-600:   #5C3D2E;
+  --brown-400:   #9B7060;
+  --brown-200:   #D4B8AE;
+  --surface:     #FFFFFF;
+  --border:      #EDE4D8;
+  --font-display: 'Fraunces', Georgia, serif;
+  --font-ui:      'Outfit', system-ui, sans-serif;
+  --radius-sm:   8px;
+  --radius:      14px;
+  --radius-lg:   22px;
+  --shadow-warm: 0 4px 24px rgba(199,94,56,.12);
+  --shadow-card: 0 2px 12px rgba(28,16,9,.06);
+}
+
+/* ── RESET & BASE ─────────────────────────────────────────────── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;font-family:var(--font-ui);background:#EDE4D8;color:var(--brown-900)}
+button{cursor:pointer;border:none;background:none;font-family:inherit}
+img{display:block;max-width:100%}
+
+/* ── OUTER LAYOUT ─────────────────────────────────────────────── */
+.stage{
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  padding:32px 16px 48px;
+  gap:24px;
+}
+.stage-title{
+  font-family:var(--font-display);
+  font-size:28px;
+  font-weight:700;
+  color:var(--terra);
+  letter-spacing:-.5px;
+}
+.stage-subtitle{
+  font-size:13px;
+  color:var(--brown-400);
+  text-align:center;
+  margin-top:-16px;
+}
+
+/* ── SCREEN NAV ───────────────────────────────────────────────── */
+.screen-nav{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  justify-content:center;
+}
+.screen-nav button{
+  padding:8px 18px;
+  border-radius:999px;
+  font-size:13px;
+  font-weight:600;
+  font-family:var(--font-ui);
+  border:2px solid var(--terra-200);
+  color:var(--brown-600);
+  background:var(--surface);
+  transition:all .2s;
+}
+.screen-nav button.active{
+  background:var(--terra);
+  border-color:var(--terra);
+  color:#fff;
+  box-shadow:var(--shadow-warm);
+}
+.screen-nav button:hover:not(.active){
+  border-color:var(--terra);
+  color:var(--terra);
+}
+
+/* ── PHONE FRAME ──────────────────────────────────────────────── */
+.phone{
+  width:375px;
+  height:812px;
+  background:var(--cream);
+  border-radius:44px;
+  overflow:hidden;
+  position:relative;
+  box-shadow:
+    0 0 0 3px #1C1009,
+    0 32px 64px rgba(28,16,9,.35),
+    0 8px 16px rgba(28,16,9,.2);
+}
+.phone-notch{
+  position:absolute;
+  top:0;left:50%;
+  transform:translateX(-50%);
+  width:120px;height:32px;
+  background:#1C1009;
+  border-radius:0 0 18px 18px;
+  z-index:100;
+}
+
+/* ── STATUS BAR ───────────────────────────────────────────────── */
+.status-bar{
+  height:44px;
+  padding:0 24px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  font-size:12px;
+  font-weight:700;
+  background:inherit;
+}
+.status-icons{display:flex;gap:6px;align-items:center}
+.battery{
+  width:22px;height:11px;
+  border:1.5px solid currentColor;
+  border-radius:3px;
+  position:relative;
+}
+.battery::after{
+  content:'';
+  position:absolute;
+  right:-5px;top:50%;
+  transform:translateY(-50%);
+  width:3px;height:6px;
+  background:currentColor;
+  border-radius:0 2px 2px 0;
+}
+.battery-fill{
+  position:absolute;
+  inset:1.5px;
+  width:80%;
+  background:currentColor;
+  border-radius:1px;
+}
+
+/* ── SCREENS (toggle) ─────────────────────────────────────────── */
+.screen{display:none;flex-direction:column;height:calc(812px - 44px);overflow:hidden}
+.screen.active{display:flex}
+
+/* ── SHARED HEADER ───────────────────────────────────────────── */
+.app-header{
+  padding:12px 20px;
+  display:flex;align-items:center;justify-content:space-between;
+  background:var(--surface);
+  border-bottom:1px solid var(--border);
+  flex-shrink:0;
+}
+.logo{
+  font-family:var(--font-display);
+  font-size:24px;font-weight:700;
+  color:var(--terra);
+  letter-spacing:-.5px;
+  font-style:italic;
+}
+.header-right{display:flex;gap:8px;align-items:center}
+.icon-btn{
+  width:36px;height:36px;
+  border-radius:50%;
+  background:var(--cream);
+  display:flex;align-items:center;justify-content:center;
+  font-size:16px;
+  position:relative;
+  transition:background .15s;
+}
+.icon-btn:hover{background:var(--terra-100)}
+.notif-dot{
+  position:absolute;top:4px;right:4px;
+  width:8px;height:8px;
+  background:#EF4444;
+  border-radius:50%;
+  border:2px solid var(--surface);
+}
+
+/* ── SCROLLABLE CONTENT ───────────────────────────────────────── */
+.scroll-area{
+  flex:1;overflow-y:auto;overflow-x:hidden;
+  scrollbar-width:none;
+}
+.scroll-area::-webkit-scrollbar{display:none}
+
+/* ── FEED TABS ────────────────────────────────────────────────── */
+.tabs{
+  display:flex;
+  background:var(--surface);
+  border-bottom:1px solid var(--border);
+  flex-shrink:0;
+}
+.tab-btn{
+  flex:1;padding:12px;
+  font-size:14px;font-weight:600;
+  color:var(--brown-400);
+  border-bottom:2.5px solid transparent;
+  transition:all .2s;
+}
+.tab-btn.active{color:var(--terra);border-bottom-color:var(--terra)}
+
+/* ── QUICK POST ───────────────────────────────────────────────── */
+.quick-post{
+  margin:12px 16px;
+  display:flex;align-items:center;gap:10px;
+  background:var(--surface);
+  border:1.5px solid var(--border);
+  border-radius:var(--radius-lg);
+  padding:10px 14px;
+}
+.quick-input{
+  flex:1;font-size:13px;color:var(--brown-200);
+}
+
+/* ── AVATAR ───────────────────────────────────────────────────── */
+.avatar{
+  width:40px;height:40px;
+  border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:13px;font-weight:700;
+  color:#fff;flex-shrink:0;
+}
+.avatar--lg{width:72px;height:72px;font-size:22px}
+.avatar--sm{width:32px;height:32px;font-size:11px}
+.avatar--indigo {background:linear-gradient(135deg,#6366F1,#4F46E5)}
+.avatar--coral  {background:linear-gradient(135deg,#FB923C,#EA580C)}
+.avatar--forest {background:linear-gradient(135deg,#34D399,#059669)}
+.avatar--terra  {background:linear-gradient(135deg,#F97316,var(--terra))}
+.avatar--violet {background:linear-gradient(135deg,#A78BFA,var(--violet))}
+.avatar--saffron{background:linear-gradient(135deg,var(--saffron),#D97706)}
+
+/* ── POST CARD ────────────────────────────────────────────────── */
+.post-card{
+  background:var(--surface);
+  margin-bottom:8px;
+  padding:16px 16px 0;
+}
+.post-header{display:flex;gap:10px;align-items:flex-start;margin-bottom:12px}
+.post-meta{flex:1;min-width:0}
+.post-name{font-size:14px;font-weight:700;color:var(--brown-900);display:block}
+.post-sub{display:flex;align-items:center;gap:6px;margin-top:2px}
+.flag-pill{
+  font-size:10px;font-weight:700;
+  padding:2px 7px;border-radius:999px;
+  background:var(--cream-200);color:var(--brown-600);
+}
+.time-tag{font-size:11px;color:var(--brown-400)}
+.dot{color:var(--brown-200)}
+
+/* ── CATEGORY BADGES ─────────────────────────────────────────── */
+.badge{
+  padding:4px 10px;border-radius:999px;
+  font-size:10.5px;font-weight:700;
+  white-space:nowrap;flex-shrink:0;
+}
+.badge--question{background:var(--saffron-100);color:#92400E}
+.badge--conseil {background:var(--forest-100);color:#065F46}
+.badge--xp      {background:var(--terra-100);color:#9A2C0E}
+.badge--annonce {background:var(--violet-100);color:#4C1D95}
+
+/* ── POST CONTENT ─────────────────────────────────────────────── */
+.post-text{font-size:13.5px;line-height:1.55;color:var(--brown-600);margin-bottom:12px}
+.post-img{
+  margin:0 -16px 12px;
+  height:160px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:12px;color:var(--brown-200);font-weight:500;
+}
+.post-actions{
+  display:flex;gap:0;border-top:1px solid var(--border);
+  margin:0 -16px;padding:0 4px;
+}
+.action-btn{
+  flex:1;padding:10px 4px;
+  font-size:12px;font-weight:600;color:var(--brown-400);
+  display:flex;align-items:center;justify-content:center;gap:5px;
+  border-radius:var(--radius-sm);
+  transition:all .15s;
+}
+.action-btn:hover{color:var(--terra);background:var(--terra-100)}
+.action-btn--like:hover{color:#EF4444}
+.action-save{margin-left:auto}
+
+/* ── DIVIDER ──────────────────────────────────────────────────── */
+.divider{height:8px;background:var(--cream-200)}
+
+/* ── BOTTOM NAV ───────────────────────────────────────────────── */
+.bottom-nav{
+  display:flex;align-items:center;
+  background:var(--surface);
+  border-top:1px solid var(--border);
+  padding:8px 8px 4px;
+  flex-shrink:0;
+}
+.nav-btn{
+  flex:1;padding:6px;
+  display:flex;flex-direction:column;align-items:center;gap:3px;
+  font-size:10px;font-weight:600;color:var(--brown-200);
+  transition:color .15s;
+  border-radius:var(--radius-sm);
+}
+.nav-btn.active{color:var(--terra)}
+.nav-btn svg,.nav-btn .nav-icon{font-size:22px;line-height:1}
+.nav-fab{
+  width:52px;height:52px;
+  border-radius:50%;
+  background:var(--terra);
+  color:#fff;font-size:26px;font-weight:300;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 4px 16px rgba(199,94,56,.4);
+  flex-shrink:0;margin:0 4px;margin-top:-16px;
+  transition:transform .15s,box-shadow .15s;
+}
+.nav-fab:hover{transform:scale(1.06);box-shadow:0 6px 20px rgba(199,94,56,.5)}
+
+/* ── PROFILE SCREEN ───────────────────────────────────────────── */
+.cover{
+  height:140px;
+  background:linear-gradient(135deg, var(--terra) 0%, var(--saffron) 60%, #E8A020 100%);
+  position:relative;flex-shrink:0;
+}
+.cover-pattern{
+  position:absolute;inset:0;
+  background-image:repeating-linear-gradient(
+    45deg,
+    rgba(255,255,255,.06) 0px,
+    rgba(255,255,255,.06) 8px,
+    transparent 8px,
+    transparent 16px
+  ),repeating-linear-gradient(
+    -45deg,
+    rgba(255,255,255,.04) 0px,
+    rgba(255,255,255,.04) 8px,
+    transparent 8px,
+    transparent 16px
+  );
+}
+.profile-avatar-wrap{
+  position:absolute;
+  bottom:-36px;left:20px;
+}
+.profile-avatar-wrap .avatar--lg{
+  border:4px solid var(--surface);
+  box-shadow:0 4px 16px rgba(28,16,9,.15);
+}
+.edit-cover-btn{
+  position:absolute;bottom:10px;right:14px;
+  background:rgba(28,16,9,.35);color:#fff;
+  font-size:11px;font-weight:600;
+  padding:5px 12px;border-radius:999px;
+  backdrop-filter:blur(6px);
+}
+.profile-header{
+  padding:44px 20px 16px;
+  background:var(--surface);
+  border-bottom:1px solid var(--border);
+}
+.profile-name{font-family:var(--font-display);font-size:22px;font-weight:700}
+.profile-handle{font-size:13px;color:var(--brown-400);margin-top:2px}
+.flag-row{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
+.flag-badge{
+  display:flex;align-items:center;gap:4px;
+  background:var(--cream);border:1px solid var(--border);
+  border-radius:999px;padding:3px 10px;
+  font-size:12px;font-weight:600;color:var(--brown-600);
+}
+.mentor-tag{
+  display:inline-flex;align-items:center;gap:5px;
+  background:var(--saffron-100);border:1px solid var(--saffron);
+  border-radius:999px;padding:4px 12px;
+  font-size:11.5px;font-weight:700;color:#92400E;
+  margin-top:8px;
+}
+.stats-row{
+  display:flex;background:var(--surface);
+  border-bottom:1px solid var(--border);
+}
+.stat-item{
+  flex:1;padding:14px 8px;text-align:center;
+  border-right:1px solid var(--border);
+}
+.stat-item:last-child{border-right:none}
+.stat-num{font-family:var(--font-display);font-size:20px;font-weight:700;color:var(--brown-900)}
+.stat-lbl{font-size:10px;color:var(--brown-400);margin-top:2px;font-weight:600}
+.action-row{
+  display:flex;gap:10px;padding:14px 16px;
+  background:var(--surface);border-bottom:1px solid var(--border);
+}
+.btn-outline{
+  flex:1;padding:10px;border-radius:var(--radius-sm);
+  font-size:13px;font-weight:700;
+  border:2px solid var(--terra);color:var(--terra);
+  transition:all .15s;
+}
+.btn-outline:hover{background:var(--terra-100)}
+.btn-filled{
+  flex:1;padding:10px;border-radius:var(--radius-sm);
+  font-size:13px;font-weight:700;
+  background:var(--terra);color:#fff;
+  box-shadow:0 3px 10px rgba(199,94,56,.35);
+  transition:all .15s;
+}
+.btn-filled:hover{background:var(--terra-hover)}
+.profile-section{
+  background:var(--surface);margin-bottom:8px;padding:16px;
+}
+.section-label{font-size:10.5px;font-weight:700;color:var(--brown-400);letter-spacing:.6px;text-transform:uppercase;margin-bottom:10px}
+.bio-text{font-size:13.5px;line-height:1.6;color:var(--brown-600)}
+.info-row{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--brown-600);margin-bottom:8px}
+.info-icon{width:28px;height:28px;border-radius:8px;background:var(--terra-100);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+.tags-wrap{display:flex;flex-wrap:wrap;gap:8px}
+.skill-tag{
+  background:var(--cream);border:1.5px solid var(--border);
+  border-radius:999px;padding:5px 13px;
+  font-size:12px;font-weight:600;color:var(--brown-600);
+}
+.interest-tag{
+  background:var(--terra-100);border:1px solid var(--terra-200);
+  border-radius:999px;padding:5px 13px;
+  font-size:12px;font-weight:600;color:var(--terra);
+}
+
+/* ── EVENTS SCREEN ────────────────────────────────────────────── */
+.events-header{
+  background:var(--surface);padding:14px 16px 0;
+  border-bottom:1px solid var(--border);
+  flex-shrink:0;
+}
+.events-title-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.screen-title{font-family:var(--font-display);font-size:22px;font-weight:700}
+.filter-chips{display:flex;gap:8px;overflow-x:auto;padding-bottom:12px;scrollbar-width:none}
+.filter-chips::-webkit-scrollbar{display:none}
+.chip{
+  padding:6px 14px;border-radius:999px;
+  font-size:12px;font-weight:600;white-space:nowrap;
+  border:1.5px solid var(--border);
+  background:var(--surface);color:var(--brown-600);
+  transition:all .15s;flex-shrink:0;
+}
+.chip.active{background:var(--terra);border-color:var(--terra);color:#fff}
+.chip.selected{background:var(--terra-100);border-color:var(--terra);color:var(--terra)}
+
+/* ── EVENT CARD ───────────────────────────────────────────────── */
+.event-card{background:var(--surface);margin-bottom:8px;overflow:hidden}
+.event-cover{
+  height:152px;position:relative;
+  display:flex;align-items:center;justify-content:center;
+}
+.event-cover--cultural {background:linear-gradient(135deg,#7C3AED,#5B21B6)}
+.event-cover--pro      {background:linear-gradient(135deg,var(--saffron),#D97706)}
+.event-cover--social   {background:linear-gradient(135deg,var(--forest),#1A4731)}
+.event-cover--sport    {background:linear-gradient(135deg,#EA580C,#9A3412)}
+.cover-title{
+  font-family:var(--font-display);font-size:20px;font-weight:700;
+  color:rgba(255,255,255,.9);text-align:center;padding:0 20px;
+}
+.event-badges{
+  position:absolute;top:12px;left:12px;
+  display:flex;gap:6px;
+}
+.event-badge{
+  padding:4px 10px;border-radius:999px;
+  font-size:10px;font-weight:700;color:#fff;
+}
+.eb--cultural{background:rgba(124,58,237,.8)}
+.eb--pro     {background:rgba(217,119,6,.85)}
+.eb--social  {background:rgba(45,106,79,.85)}
+.eb--sport   {background:rgba(234,88,12,.85)}
+.eb--free    {background:rgba(5,150,105,.85)}
+.eb--paid    {
+  background:rgba(255,255,255,.2);
+  border:1px solid rgba(255,255,255,.5);
+}
+.event-body{padding:14px 16px}
+.event-title{font-size:16px;font-weight:700;color:var(--brown-900);margin-bottom:6px}
+.event-meta{display:flex;flex-direction:column;gap:4px;margin-bottom:12px}
+.event-meta-row{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--brown-400)}
+.event-meta-icon{font-size:14px}
+.event-footer{display:flex;align-items:center;justify-content:space-between}
+.participants-stack{display:flex;align-items:center}
+.participant-dot{
+  width:26px;height:26px;border-radius:50%;
+  border:2px solid var(--surface);
+  margin-left:-8px;
+  background:var(--terra-200);
+  font-size:9px;color:var(--terra);
+  display:flex;align-items:center;justify-content:center;font-weight:700;
+}
+.participant-dot:first-child{margin-left:0}
+.participant-count{font-size:12px;color:var(--brown-400);margin-left:8px;font-weight:600}
+.participate-btn{
+  padding:9px 18px;border-radius:var(--radius-sm);
+  background:var(--terra);color:#fff;
+  font-size:12.5px;font-weight:700;
+  box-shadow:0 3px 10px rgba(199,94,56,.3);
+  transition:all .15s;
+}
+.participate-btn:hover{background:var(--terra-hover);transform:translateY(-1px)}
+.participate-btn.joined{background:var(--forest);box-shadow:0 3px 10px rgba(45,106,79,.3)}
+
+/* ── NETWORK SCREEN ───────────────────────────────────────────── */
+.network-header{
+  background:var(--surface);
+  border-bottom:1px solid var(--border);
+  padding:14px 16px;flex-shrink:0;
+}
+.search-bar{
+  display:flex;align-items:center;gap:8px;
+  background:var(--cream);border:1.5px solid var(--border);
+  border-radius:var(--radius-lg);
+  padding:10px 14px;margin-top:12px;
+}
+.search-bar input{
+  flex:1;background:none;border:none;outline:none;
+  font-size:13.5px;font-family:var(--font-ui);color:var(--brown-600);
+}
+.search-bar input::placeholder{color:var(--brown-200)}
+.active-filters{
+  display:flex;gap:6px;overflow-x:auto;padding:10px 16px;
+  background:var(--surface);border-bottom:1px solid var(--border);
+  scrollbar-width:none;flex-shrink:0;
+}
+.active-filter{
+  display:flex;align-items:center;gap:5px;
+  background:var(--saffron-100);border:1px solid var(--saffron);
+  color:#92400E;border-radius:999px;
+  padding:4px 12px;font-size:12px;font-weight:700;white-space:nowrap;
+}
+.active-filter .remove{font-size:14px;cursor:pointer;opacity:.7}
+.filter-btn{
+  background:var(--cream);border:1.5px solid var(--border);
+  color:var(--brown-400);border-radius:999px;
+  padding:4px 14px;font-size:12px;font-weight:600;white-space:nowrap;
+}
+.section-heading{
+  padding:14px 16px 6px;
+  font-size:11px;font-weight:700;color:var(--brown-400);
+  letter-spacing:.6px;text-transform:uppercase;
+  background:var(--surface);
+}
+
+/* ── SUGGESTION CARD ──────────────────────────────────────────── */
+.suggestion-card{
+  background:var(--surface);
+  padding:16px;margin-bottom:8px;
+}
+.suggestion-header{display:flex;gap:12px;align-items:flex-start;margin-bottom:12px}
+.suggestion-info{flex:1}
+.suggestion-name{font-size:15px;font-weight:700}
+.suggestion-sub{font-size:12px;color:var(--brown-400);margin-top:2px}
+.match-reasons{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+.match-tag{
+  display:flex;align-items:center;gap:4px;
+  background:var(--saffron-100);border:1px solid var(--saffron);
+  color:#92400E;border-radius:999px;
+  padding:3px 10px;font-size:11px;font-weight:700;
+}
+.suggestion-actions{display:flex;gap:8px}
+.btn-sm-outline{
+  flex:1;padding:8px;border-radius:var(--radius-sm);
+  font-size:12.5px;font-weight:700;
+  border:2px solid var(--border);color:var(--brown-600);
+  transition:all .15s;
+}
+.btn-sm-outline:hover{border-color:var(--terra);color:var(--terra)}
+.btn-sm-filled{
+  flex:1.4;padding:8px;border-radius:var(--radius-sm);
+  font-size:12.5px;font-weight:700;
+  background:var(--terra);color:#fff;
+  box-shadow:0 3px 8px rgba(199,94,56,.3);
+}
+
+/* ── MESSAGING SCREEN ─────────────────────────────────────────── */
+.chat-header{
+  display:flex;align-items:center;gap:12px;
+  padding:12px 16px;
+  background:linear-gradient(135deg,var(--terra),#A84B28);
+  flex-shrink:0;color:#fff;
+}
+.chat-header .back{font-size:22px;color:rgba(255,255,255,.8)}
+.chat-avatar-wrap{position:relative}
+.chat-avatar-wrap .avatar{width:42px;height:42px;background:var(--terra-200)}
+.online-dot{
+  position:absolute;bottom:2px;right:2px;
+  width:10px;height:10px;
+  background:#22C55E;border-radius:50%;
+  border:2px solid var(--terra);
+}
+.chat-name{font-size:15px;font-weight:700;flex:1}
+.chat-status{font-size:11px;opacity:.75;margin-top:1px}
+.messages-area{
+  flex:1;overflow-y:auto;padding:16px;
+  display:flex;flex-direction:column;gap:4px;
+  scrollbar-width:none;background:var(--cream);
+}
+.messages-area::-webkit-scrollbar{display:none}
+.date-sep{
+  text-align:center;font-size:11px;font-weight:600;
+  color:var(--brown-400);margin:8px 0;
+  display:flex;align-items:center;gap:8px;
+}
+.date-sep::before,.date-sep::after{content:'';flex:1;height:1px;background:var(--border)}
+.msg{
+  max-width:78%;
+  padding:10px 14px;
+  border-radius:18px;
+  font-size:13.5px;line-height:1.5;
+  margin-bottom:6px;
+}
+.msg--received{
+  align-self:flex-start;
+  background:var(--surface);color:var(--brown-900);
+  border-radius:4px 18px 18px 18px;
+  box-shadow:0 1px 4px rgba(28,16,9,.07);
+}
+.msg--sent{
+  align-self:flex-end;
+  background:linear-gradient(135deg,var(--terra),#A84B28);
+  color:#fff;
+  border-radius:18px 4px 18px 18px;
+}
+.msg-sender{font-size:11px;font-weight:700;color:var(--brown-400);margin-bottom:4px}
+.msg-time{
+  font-size:10px;opacity:.6;margin-top:4px;
+  display:flex;align-items:center;gap:4px;
+}
+.msg--sent .msg-time{justify-content:flex-end}
+.read-receipt{font-size:13px;color:var(--saffron)}
+.typing-bubble{
+  align-self:flex-start;
+  background:var(--surface);
+  border-radius:4px 18px 18px 18px;
+  padding:12px 16px;
+  display:flex;gap:5px;align-items:center;
+  box-shadow:0 1px 4px rgba(28,16,9,.07);
+}
+.typing-dot{
+  width:8px;height:8px;border-radius:50%;
+  background:var(--brown-200);
+  animation:typingBounce 1.2s infinite;
+}
+.typing-dot:nth-child(2){animation-delay:.2s}
+.typing-dot:nth-child(3){animation-delay:.4s}
+@keyframes typingBounce{
+  0%,60%,100%{transform:translateY(0)}
+  30%{transform:translateY(-6px)}
+}
+.chat-input-bar{
+  display:flex;align-items:center;gap:10px;
+  padding:10px 14px;
+  background:var(--surface);border-top:1px solid var(--border);
+  flex-shrink:0;
+}
+.chat-attach{width:34px;height:34px;border-radius:50%;background:var(--cream);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.chat-input{
+  flex:1;padding:10px 14px;
+  background:var(--cream);border:1.5px solid var(--border);
+  border-radius:var(--radius-lg);
+  font-size:13.5px;font-family:var(--font-ui);
+  outline:none;color:var(--brown-600);
+}
+.chat-input::placeholder{color:var(--brown-200)}
+.chat-send{
+  width:40px;height:40px;border-radius:50%;
+  background:var(--terra);color:#fff;
+  font-size:18px;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 3px 10px rgba(199,94,56,.35);flex-shrink:0;
+  transition:transform .15s;
+}
+.chat-send:hover{transform:scale(1.08)}
+</style>
+</head>
+<body>
+<div class="stage">
+  <div class="stage-title">Agun</div>
+  <p class="stage-subtitle">Design Preview — Ubuntu Warm · Terracotta + Saffron + Forest</p>
+
+  <!-- SCREEN NAVIGATION -->
+  <div class="screen-nav" id="screenNav">
+    <button class="active" onclick="showScreen('feed',this)">🏠 Feed</button>
+    <button onclick="showScreen('profile',this)">👤 Profil</button>
+    <button onclick="showScreen('events',this)">📅 Événements</button>
+    <button onclick="showScreen('network',this)">🔗 Réseau</button>
+    <button onclick="showScreen('messaging',this)">💬 Messages</button>
+  </div>
+
+  <!-- PHONE FRAME -->
+  <div class="phone">
+    <div class="phone-notch"></div>
+
+    <!-- ═══════════════════════════════════ -->
+    <!-- SCREEN 1 : FEED                   -->
+    <!-- ═══════════════════════════════════ -->
+    <div class="screen active" id="screen-feed">
+      <div class="status-bar">
+        <span>9:41</span>
+        <div class="status-icons">
+          <span>●●●</span>
+          <div class="battery"><div class="battery-fill"></div></div>
+        </div>
+      </div>
+      <div class="app-header">
+        <span class="logo">Agun</span>
+        <div class="header-right">
+          <button class="icon-btn">✉</button>
+          <button class="icon-btn">
+            🔔
+            <span class="notif-dot"></span>
+          </button>
+        </div>
+      </div>
+      <div class="tabs">
+        <button class="tab-btn active">Pour toi</button>
+        <button class="tab-btn">Récents</button>
+      </div>
+      <div class="scroll-area">
+        <div class="quick-post">
+          <div class="avatar avatar--sm avatar--terra">AD</div>
+          <div class="quick-input">Partager avec la communauté…</div>
+        </div>
+        <div class="divider"></div>
+
+        <!-- Post 1 — Question -->
+        <div class="post-card">
+          <div class="post-header">
+            <div class="avatar avatar--indigo">AD</div>
+            <div class="post-meta">
+              <span class="post-name">Amara Diallo</span>
+              <div class="post-sub">
+                <span class="flag-pill">🇸🇳 SEN</span>
+                <span class="dot">·</span>
+                <span class="time-tag">2h</span>
+              </div>
+            </div>
+            <span class="badge badge--question">❓ Question</span>
+          </div>
+          <p class="post-text">Des conseils pour ouvrir un compte bancaire au Royaume-Uni ? J'arrive à Londres dans 2 semaines et je ne sais pas par où commencer…</p>
+          <div class="post-actions">
+            <button class="action-btn action-btn--like">♥ 14</button>
+            <button class="action-btn">💬 7</button>
+            <button class="action-btn">↗ 2</button>
+            <button class="action-btn action-save">🔖</button>
+          </div>
+        </div>
+        <div class="divider"></div>
+
+        <!-- Post 2 — Conseil -->
+        <div class="post-card">
+          <div class="post-header">
+            <div class="avatar avatar--coral">FK</div>
+            <div class="post-meta">
+              <span class="post-name">Fatoumata Koné</span>
+              <div class="post-sub">
+                <span class="flag-pill">🇨🇲 CAM</span>
+                <span class="dot">·</span>
+                <span class="time-tag">4h</span>
+              </div>
+            </div>
+            <span class="badge badge--conseil">💡 Conseil</span>
+          </div>
+          <p class="post-text">5 choses que j'aurais voulu savoir en arrivant en France : la CAF, la mutuelle, Nickel, les APL… <span style="color:var(--terra);font-weight:600">Voir plus</span></p>
+          <div class="post-img" style="background:linear-gradient(135deg,var(--forest-100),var(--cream-200))">
+            <span>📷 Image · 320×160</span>
+          </div>
+          <div class="post-actions">
+            <button class="action-btn action-btn--like">♥ 89</button>
+            <button class="action-btn">💬 23</button>
+            <button class="action-btn">↗ 11</button>
+            <button class="action-btn action-save">🔖</button>
+          </div>
+        </div>
+        <div class="divider"></div>
+
+        <!-- Post 3 — Annonce -->
+        <div class="post-card">
+          <div class="post-header">
+            <div class="avatar avatar--forest">KM</div>
+            <div class="post-meta">
+              <span class="post-name">Kofi Mensah</span>
+              <div class="post-sub">
+                <span class="flag-pill">🇬🇭 GHA</span>
+                <span class="dot">·</span>
+                <span class="time-tag">6h</span>
+              </div>
+            </div>
+            <span class="badge badge--annonce">📣 Annonce</span>
+          </div>
+          <p class="post-text">Mon restaurant de cuisine ghanéenne ouvre ses portes à Montréal ce samedi ! Venez nombreux, premier service offert 🍽️</p>
+          <div class="post-actions">
+            <button class="action-btn action-btn--like">♥ 47</button>
+            <button class="action-btn">💬 18</button>
+            <button class="action-btn">↗ 5</button>
+            <button class="action-btn action-save">🔖</button>
+          </div>
+        </div>
+        <div style="height:72px"></div>
+      </div>
+      <nav class="bottom-nav">
+        <button class="nav-btn active"><span class="nav-icon">⌂</span>Accueil</button>
+        <button class="nav-btn"><span class="nav-icon">⊙</span>Explorer</button>
+        <button class="nav-fab">+</button>
+        <button class="nav-btn"><span class="nav-icon">♪</span>Notifs</button>
+        <button class="nav-btn"><span class="nav-icon">○</span>Profil</button>
+      </nav>
+    </div>
+
+    <!-- ═══════════════════════════════════ -->
+    <!-- SCREEN 2 : PROFILE                -->
+    <!-- ═══════════════════════════════════ -->
+    <div class="screen" id="screen-profile">
+      <div class="status-bar" style="background:var(--terra);color:#fff">
+        <span>9:41</span>
+        <div class="status-icons">
+          <span>●●●</span>
+          <div class="battery" style="border-color:#fff"><div class="battery-fill" style="background:#fff"></div></div>
+        </div>
+      </div>
+      <div class="cover">
+        <div class="cover-pattern"></div>
+        <div class="profile-avatar-wrap">
+          <div class="avatar avatar--lg avatar--indigo">AD</div>
+        </div>
+        <button class="edit-cover-btn">✎ Modifier</button>
+      </div>
+      <div class="scroll-area">
+        <div class="profile-header">
+          <div class="profile-name">Amara Diallo</div>
+          <div class="profile-handle">@amara_diallo</div>
+          <div class="flag-row">
+            <span class="flag-badge">🇸🇳 Sénégal</span>
+            <span class="flag-badge">🇬🇳 Guinée</span>
+            <span class="flag-badge">🇫🇷 France</span>
+          </div>
+          <div class="mentor-tag">⭐ Mentor · Informatique</div>
+        </div>
+        <div class="stats-row">
+          <div class="stat-item">
+            <div class="stat-num">248</div>
+            <div class="stat-lbl">Abonnés</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-num">112</div>
+            <div class="stat-lbl">Abonn.</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-num">34</div>
+            <div class="stat-lbl">Connexions</div>
+          </div>
+        </div>
+        <div class="action-row">
+          <button class="btn-outline">+ Suivre</button>
+          <button class="btn-filled">Se connecter</button>
+        </div>
+        <div class="divider"></div>
+        <div class="profile-section">
+          <div class="section-label">À propos</div>
+          <div class="bio-text">Étudiant en informatique à Paris. Passionné de tech africaine et de culture 🌍. En quête de connexions qui comptent.</div>
+        </div>
+        <div class="divider" style="height:1px;background:var(--border)"></div>
+        <div class="profile-section">
+          <div class="section-label">Identité & Localisation</div>
+          <div class="info-row"><div class="info-icon">🌍</div><span>Origine : Sénégal, Guinée</span></div>
+          <div class="info-row"><div class="info-icon">🏠</div><span>Résidence : Paris, France</span></div>
+          <div class="info-row"><div class="info-icon">🎓</div><span>Master Info · Université Paris 8</span></div>
+          <div class="info-row"><div class="info-icon">👥</div><span>Ethnie : Wolof, Peul</span></div>
+        </div>
+        <div class="divider" style="height:1px;background:var(--border)"></div>
+        <div class="profile-section">
+          <div class="section-label">Compétences</div>
+          <div class="tags-wrap">
+            <span class="skill-tag">Python ★★★</span>
+            <span class="skill-tag">React ★★</span>
+            <span class="skill-tag">Design ★★</span>
+            <span class="skill-tag">SQL ★</span>
+          </div>
+        </div>
+        <div class="divider" style="height:1px;background:var(--border)"></div>
+        <div class="profile-section">
+          <div class="section-label">Centres d'intérêt</div>
+          <div class="tags-wrap">
+            <span class="interest-tag">⚽ Football</span>
+            <span class="interest-tag">🎵 Afrobeats</span>
+            <span class="interest-tag">🤖 Intelligence Artificielle</span>
+            <span class="interest-tag">🍽 Gastronomie</span>
+          </div>
+        </div>
+        <div style="height:24px"></div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════ -->
+    <!-- SCREEN 3 : EVENTS                 -->
+    <!-- ═══════════════════════════════════ -->
+    <div class="screen" id="screen-events">
+      <div class="status-bar"><span>9:41</span><div class="status-icons"><span>●●●</span><div class="battery"><div class="battery-fill"></div></div></div></div>
+      <div class="events-header">
+        <div class="events-title-row">
+          <span class="screen-title">Événements</span>
+          <button class="icon-btn">⊙</button>
+        </div>
+        <div class="filter-chips">
+          <button class="chip active">Près de moi</button>
+          <button class="chip">En ligne</button>
+          <button class="chip">Communauté</button>
+          <button class="chip selected">Ce weekend ✕</button>
+          <button class="chip selected">Gratuit ✕</button>
+        </div>
+      </div>
+      <div class="scroll-area">
+
+        <!-- Event 1 — Culturel -->
+        <div class="event-card">
+          <div class="event-cover event-cover--cultural">
+            <div class="cover-title">Soirée Afro-Beat Paris</div>
+            <div class="event-badges">
+              <span class="event-badge eb--cultural">🎵 Culturel</span>
+              <span class="event-badge eb--free">GRATUIT</span>
+            </div>
+          </div>
+          <div class="event-body">
+            <div class="event-title">Soirée Afro-Beat Paris</div>
+            <div class="event-meta">
+              <div class="event-meta-row"><span class="event-meta-icon">📅</span>Sam 17 Mai · 21h00 → 02h00</div>
+              <div class="event-meta-row"><span class="event-meta-icon">📍</span>Le Trabendo · Paris 19e</div>
+            </div>
+            <div class="event-footer">
+              <div>
+                <div class="participants-stack">
+                  <div class="participant-dot">AD</div>
+                  <div class="participant-dot">FK</div>
+                  <div class="participant-dot">KM</div>
+                  <span class="participant-count">+44 participants</span>
+                </div>
+              </div>
+              <button class="participate-btn">Je participe</button>
+            </div>
+          </div>
+        </div>
+        <div class="divider"></div>
+
+        <!-- Event 2 — Professionnel -->
+        <div class="event-card">
+          <div class="event-cover event-cover--pro">
+            <div class="cover-title">Meetup Diaspora Tech</div>
+            <div class="event-badges">
+              <span class="event-badge eb--pro">💼 Professionnel</span>
+              <span class="event-badge eb--paid">15€</span>
+            </div>
+          </div>
+          <div class="event-body">
+            <div class="event-title">Meetup Diaspora Tech — Lyon</div>
+            <div class="event-meta">
+              <div class="event-meta-row"><span class="event-meta-icon">📅</span>Jeu 22 Mai · 18h00</div>
+              <div class="event-meta-row"><span class="event-meta-icon">💻</span>En ligne · Zoom</div>
+            </div>
+            <div class="event-footer">
+              <div>
+                <div class="participants-stack">
+                  <div class="participant-dot">IS</div>
+                  <div class="participant-dot">AB</div>
+                  <span class="participant-count">+21 inscrits</span>
+                </div>
+              </div>
+              <button class="participate-btn joined">✓ Inscrit</button>
+            </div>
+          </div>
+        </div>
+        <div class="divider"></div>
+
+        <!-- Event 3 — Social -->
+        <div class="event-card">
+          <div class="event-cover event-cover--social">
+            <div class="cover-title">Pique-nique Diaspora</div>
+            <div class="event-badges">
+              <span class="event-badge eb--social">🤝 Social</span>
+              <span class="event-badge eb--free">GRATUIT</span>
+            </div>
+          </div>
+          <div class="event-body">
+            <div class="event-title">Pique-nique Diaspora — Bois de V.</div>
+            <div class="event-meta">
+              <div class="event-meta-row"><span class="event-meta-icon">📅</span>Dim 25 Mai · 12h00</div>
+              <div class="event-meta-row"><span class="event-meta-icon">📍</span>Bois de Vincennes · Paris</div>
+            </div>
+            <div class="event-footer">
+              <div>
+                <div class="participants-stack">
+                  <div class="participant-dot">OD</div>
+                  <div class="participant-dot">MT</div>
+                  <div class="participant-dot">FK</div>
+                  <span class="participant-count">+109 participants</span>
+                </div>
+              </div>
+              <button class="participate-btn">Je participe</button>
+            </div>
+          </div>
+        </div>
+        <div style="height:72px"></div>
+      </div>
+      <nav class="bottom-nav">
+        <button class="nav-btn"><span class="nav-icon">⌂</span>Accueil</button>
+        <button class="nav-btn active"><span class="nav-icon">⊙</span>Explorer</button>
+        <button class="nav-fab">+</button>
+        <button class="nav-btn"><span class="nav-icon">♪</span>Notifs</button>
+        <button class="nav-btn"><span class="nav-icon">○</span>Profil</button>
+      </nav>
+    </div>
+
+    <!-- ═══════════════════════════════════ -->
+    <!-- SCREEN 4 : NETWORK                -->
+    <!-- ═══════════════════════════════════ -->
+    <div class="screen" id="screen-network">
+      <div class="status-bar"><span>9:41</span><div class="status-icons"><span>●●●</span><div class="battery"><div class="battery-fill"></div></div></div></div>
+      <div class="network-header">
+        <div style="display:flex;align-items:center;justify-content:space-between">
+          <span class="screen-title">Réseau</span>
+          <button class="icon-btn">⊞</button>
+        </div>
+        <div class="search-bar">
+          <span style="font-size:16px;color:var(--brown-200)">⊙</span>
+          <input type="text" placeholder="Rechercher par nom, ville, domaine…" readonly/>
+        </div>
+      </div>
+      <div class="active-filters">
+        <span class="active-filter">🇸🇳 Sénégal <span class="remove">✕</span></span>
+        <span class="active-filter">📍 Paris <span class="remove">✕</span></span>
+        <span class="active-filter">🎓 Étudiant <span class="remove">✕</span></span>
+        <button class="filter-btn">+ Filtres</button>
+      </div>
+      <div class="section-heading">Personnes à connaître · 47 résultats</div>
+      <div class="scroll-area">
+
+        <div class="suggestion-card">
+          <div class="suggestion-header">
+            <div class="avatar avatar--indigo">IS</div>
+            <div class="suggestion-info">
+              <div class="suggestion-name">Ibou Sarr</div>
+              <div class="suggestion-sub">@ibou · Paris · Étudiant Informatique</div>
+            </div>
+            <span class="flag-pill">🇸🇳 SEN</span>
+          </div>
+          <div class="match-reasons">
+            <span class="match-tag">🌍 Même pays d'origine</span>
+            <span class="match-tag">🏙 Même ville</span>
+            <span class="match-tag">🤝 2 connexions communes</span>
+          </div>
+          <div class="suggestion-actions">
+            <button class="btn-sm-outline">+ Suivre</button>
+            <button class="btn-sm-filled">Se connecter</button>
+          </div>
+        </div>
+        <div class="divider"></div>
+
+        <div class="suggestion-card">
+          <div class="suggestion-header">
+            <div class="avatar avatar--coral">AB</div>
+            <div class="suggestion-info">
+              <div class="suggestion-name">Aïssatou Baldé</div>
+              <div class="suggestion-sub">@aissa · Lyon · Entrepreneuse</div>
+            </div>
+            <span class="flag-pill">🇬🇳 GUI</span>
+          </div>
+          <div style="margin-bottom:6px">
+            <span class="mentor-tag" style="display:inline-flex">⭐ Mentor</span>
+          </div>
+          <div class="match-reasons">
+            <span class="match-tag">🇬🇳 Même origine (Guinée)</span>
+            <span class="match-tag">⚡ 5 intérêts communs</span>
+          </div>
+          <div class="suggestion-actions">
+            <button class="btn-sm-outline">+ Suivre</button>
+            <button class="btn-sm-filled">Se connecter</button>
+          </div>
+        </div>
+        <div class="divider"></div>
+
+        <div class="suggestion-card">
+          <div class="suggestion-header">
+            <div class="avatar avatar--forest">OD</div>
+            <div class="suggestion-info">
+              <div class="suggestion-name">Omar Diallo</div>
+              <div class="suggestion-sub">@omar · Berlin · Ingénieur</div>
+            </div>
+            <span class="flag-pill">🇸🇳 SEN</span>
+          </div>
+          <div class="match-reasons">
+            <span class="match-tag">🌍 Sénégal</span>
+            <span class="match-tag">🤝 4 connexions communes</span>
+            <span class="match-tag">💼 Même secteur</span>
+          </div>
+          <div class="suggestion-actions">
+            <button class="btn-sm-outline">+ Suivre</button>
+            <button class="btn-sm-filled">Se connecter</button>
+          </div>
+        </div>
+        <div style="height:72px"></div>
+      </div>
+      <nav class="bottom-nav">
+        <button class="nav-btn"><span class="nav-icon">⌂</span>Accueil</button>
+        <button class="nav-btn active"><span class="nav-icon">⊙</span>Explorer</button>
+        <button class="nav-fab">+</button>
+        <button class="nav-btn"><span class="nav-icon">♪</span>Notifs</button>
+        <button class="nav-btn"><span class="nav-icon">○</span>Profil</button>
+      </nav>
+    </div>
+
+    <!-- ═══════════════════════════════════ -->
+    <!-- SCREEN 5 : MESSAGING              -->
+    <!-- ═══════════════════════════════════ -->
+    <div class="screen" id="screen-messaging">
+      <div class="status-bar" style="background:var(--terra);color:#fff"><span>9:41</span><div class="status-icons"><span>●●●</span><div class="battery" style="border-color:#fff"><div class="battery-fill" style="background:#fff"></div></div></div></div>
+      <div class="chat-header">
+        <span class="back">‹</span>
+        <div class="chat-avatar-wrap">
+          <div class="avatar avatar--coral" style="width:42px;height:42px;font-size:13px">FK</div>
+          <div class="online-dot"></div>
+        </div>
+        <div style="flex:1">
+          <div class="chat-name">Fatoumata Koné</div>
+          <div class="chat-status">En ligne ●</div>
+        </div>
+        <button style="color:rgba(255,255,255,.8);font-size:18px">⊞</button>
+      </div>
+      <div class="messages-area">
+        <div class="date-sep">Mercredi 14 Mai 2026</div>
+
+        <div style="font-size:11px;font-weight:700;color:var(--brown-400);margin-bottom:4px">Fatoumata</div>
+        <div class="msg msg--received">Salut ! J'ai vu ton post sur les démarches CAF 👏 Vraiment utile !</div>
+        <div class="msg msg--received">Tu aurais des conseils pour trouver une mutuelle étudiante ?<div class="msg-time">09:15</div></div>
+
+        <div class="msg msg--sent">
+          Oui bien sûr ! Voici 3 options qui marchent bien selon ta situation : LMDE, HEYME et Mutuelle des Étudiants.
+          <div class="msg-time">09:32 <span class="read-receipt">✓✓ Lu</span></div>
+        </div>
+
+        <div class="msg msg--received">
+          Merci beaucoup ! Tu es vraiment trop sympa 🙏
+          <div class="msg-time">14:23</div>
+        </div>
+
+        <div class="typing-bubble">
+          <div class="typing-dot"></div>
+          <div class="typing-dot"></div>
+          <div class="typing-dot"></div>
+        </div>
+      </div>
+      <div class="chat-input-bar">
+        <button class="chat-attach">📎</button>
+        <input class="chat-input" type="text" placeholder="Écrire un message…" readonly/>
+        <button>😊</button>
+        <button class="chat-send">➤</button>
+      </div>
+    </div>
+
+  </div><!-- /phone -->
+
+  <p style="font-size:12px;color:var(--brown-400);text-align:center;max-width:400px">
+    Palette Ubuntu Warm · Fraunces (display) + Outfit (UI) · Mobile 375px
+  </p>
+</div>
+
+<script>
+function showScreen(id, btn) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('#screenNav button').forEach(b => b.classList.remove('active'));
+  document.getElementById('screen-' + id).classList.add('active');
+  btn.classList.add('active');
+}
+</script>
+</body>
+</html>
