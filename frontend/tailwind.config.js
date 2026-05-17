@@ -31,76 +31,102 @@ module.exports = {
     extend: {
 
       // ✍️ 1. NOS POLICES DE CARACTERES
-      // Permet d'écrire `font-display` pour avoir l'Outfit, ou `font-body` pour l'Inter.
+      // font-display = Fraunces (serif chaleureux pour les titres H1/H2/H3)
+      // font-ui = Outfit (sans-serif moderne pour l'interface)
       fontFamily: {
-        display: ['Outfit', 'sans-serif'],
-        body: ['Inter', 'sans-serif'],
-        african: ['African', 'sans-serif'],
+        display: ['Fraunces', 'Georgia', 'serif'],
+        ui:      ['Outfit', 'system-ui', 'sans-serif'],
+        body:    ['Outfit', 'system-ui', 'sans-serif'],
       },
 
-      // 🎨 2. NOS COULEURS
-      // Tu vois ces `hsl(var(--background))` ? 
-      // C'est ce qui fait le lien avec notre fichier `index.css`.
-      // Ça dit à Tailwind : "Quand le codeur tape 'bg-background', va chercher la valeur CSS '--background'".
+      // 🎨 2. NOS COULEURS — Ubuntu Warm
+      // Deux niveaux :
+      //   - Tokens sémantiques (primary, background...) → liés aux vars CSS → s'adaptent au dark mode
+      //   - Tokens bruts (terra, saffron, forest...) → valeurs fixes de la palette Ubuntu Warm
       colors: {
-        border: "hsl(var(--border))",
-        input: "hsl(var(--input))",
-        ring: "hsl(var(--ring))",
+        border:     "hsl(var(--border))",
+        input:      "hsl(var(--input))",
+        ring:       "hsl(var(--ring))",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
 
-        // Sous-couleurs : `bg-primary` utilise DEFAULT, mais `text-primary-foreground` utilise "foreground"
+        // Tokens sémantiques (répondent au dark mode via CSS vars)
         primary: {
-          DEFAULT: "hsl(var(--primary))",
+          DEFAULT:    "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",
-          glow: "hsl(var(--primary-glow))",
-          dark: "hsl(var(--primary-dark))",
+          hover:      "hsl(var(--primary-hover))",
+          light:      "hsl(var(--primary-light))",
         },
         secondary: {
-          DEFAULT: "hsl(var(--secondary))",
+          DEFAULT:    "hsl(var(--secondary))",
           foreground: "hsl(var(--secondary-foreground))",
         },
         destructive: {
-          DEFAULT: "hsl(var(--destructive))",
+          DEFAULT:    "hsl(var(--destructive))",
           foreground: "hsl(var(--destructive-foreground))",
         },
         success: {
-          DEFAULT: "hsl(var(--success))",
+          DEFAULT:    "hsl(var(--success))",
           foreground: "hsl(var(--success-foreground))",
         },
         warning: {
-          DEFAULT: "hsl(var(--warning))",
+          DEFAULT:    "hsl(var(--warning))",
           foreground: "hsl(var(--warning-foreground))",
         },
         muted: {
-          DEFAULT: "hsl(var(--muted))",
+          DEFAULT:    "hsl(var(--muted))",
           foreground: "hsl(var(--muted-foreground))",
         },
         accent: {
-          DEFAULT: "hsl(var(--accent))",
+          DEFAULT:    "hsl(var(--accent))",
           foreground: "hsl(var(--accent-foreground))",
+          light:      "hsl(var(--accent-light))",
         },
         popover: {
-          DEFAULT: "hsl(var(--popover))",
+          DEFAULT:    "hsl(var(--popover))",
           foreground: "hsl(var(--popover-foreground))",
         },
         card: {
-          DEFAULT: "hsl(var(--card))",
+          DEFAULT:    "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
-          glass: "hsl(var(--card-glass))",
         },
-        glass: {
-          bg: "hsl(var(--glass-bg))",
-          border: "hsl(var(--glass-border))",
+
+        // ── Tokens bruts Ubuntu Warm (valeurs fixes) ──────────────────
+        // Usage direct : bg-terra, text-saffron, border-forest-100, etc.
+        terra: {
+          DEFAULT: "#C75E38",
+          hover:   "#A84B28",
+          200:     "#F0C4B0",
+          100:     "#FDE8DE",
+        },
+        saffron: {
+          DEFAULT: "#E8A020",
+          100:     "#FEF3D0",
+        },
+        forest: {
+          DEFAULT: "#2D6A4F",
+          100:     "#D1EAE0",
+        },
+        cream: {
+          DEFAULT: "#FBF7F2",
+          200:     "#EDE4D8",
+        },
+        brown: {
+          900: "#1C1009",
+          600: "#5C3D2E",
+          400: "#9B7060",
+          200: "#D4B8AE",
         },
       },
 
       // 🔲 3. NOS ARRONDIS (Border Radius)
-      // Permet d'écrire `rounded-lg` et que Tailwind aille chercher la taille choisie dans index.css
+      // sm=8px (boutons, inputs), DEFAULT=14px (cartes), lg=22px (modales, sheets)
       borderRadius: {
-        lg: "var(--radius)",
-        md: "calc(var(--radius) - 2px)",
-        sm: "calc(var(--radius) - 4px)",
+        sm:      "var(--radius-sm)",
+        DEFAULT: "var(--radius)",
+        lg:      "var(--radius-lg)",
+        md:      "calc(var(--radius) - 2px)",
+        full:    "9999px",
       },
 
       // 🎬 4. ETAPES D'ANIMATIONS (Keyframes)

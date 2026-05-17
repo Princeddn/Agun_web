@@ -3,224 +3,215 @@
 @tailwind utilities;
 
 /* ==========================================================================
-   AGUN DESIGN SYSTEM - THEMES 🎨
-   Ce fichier contient toutes les couleurs "faites maison" du projet. 
-   Au lieu d'utiliser les couleurs par défaut de Tailwind, on définit les nôtres.
+   AGUN DESIGN SYSTEM — UBUNTU WARM 🎨
+   Palette : Terracotta + Safran + Vert forêt sur fond crème
+   Fonts   : Fraunces (display) + Outfit (UI)
    ========================================================================== */
 
 @layer base {
 
-  /* 
-   * THEME CLAIR (Par défaut sur :root) ☀️
-   * :root représente la racine de notre site web. 
-   * Toutes les couleurs ici sont adaptées pour un affichage sur fond blanc. 
-   */
+  /* ── TOKENS BRUTS (palette Ubuntu Warm) ─────────────────────────────── */
   :root {
-    --background: 0 0% 98%;
-    /* Fond principal de la page (blanc très très légèrement gris) */
-    --foreground: 222 47% 11%;
-    /* Texte principal (bleu marin très foncé, presque noir) */
+    /* Terra (Terracotta) — couleur principale CTA */
+    --terra:       16 56% 50%;   /* #C75E38 */
+    --terra-hover: 16 57% 41%;   /* #A84B28 */
+    --terra-200:   18 62% 81%;   /* #F0C4B0 */
+    --terra-100:   18 85% 93%;   /* #FDE8DE */
 
-    --card: 0 0% 100%;
-    /* Fond pour les "cartes" (ex: témoignages) = Blanc pur */
-    --card-foreground: 222 47% 11%;
-    /* Texte à l'intérieur des cartes */
-    --card-glass: 0 0% 97%;
+    /* Saffron — accent, badges, highlights */
+    --saffron:     38 81% 52%;   /* #E8A020 */
+    --saffron-100: 45 94% 90%;   /* #FEF3D0 */
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 222 47% 11%;
+    /* Forest — succès, statut en ligne, validation */
+    --forest:      153 41% 30%;  /* #2D6A4F */
+    --forest-100:  153 38% 86%;  /* #D1EAE0 */
 
-    /* La couleur principale identitaire du site (Orange "AGUN") */
-    --primary: 25 95% 53%;
-    /* Orange vif */
-    --primary-foreground: 0 0% 100%;
-    /* Texte écrit sur fond orange (blanc) */
-    --primary-glow: 25 95% 60%;
-    --primary-dark: 25 95% 45%;
+    /* Cream — fonds chauds */
+    --cream:       34 53% 97%;   /* #FBF7F2 */
+    --cream-200:   34 37% 89%;   /* #EDE4D8 */
 
-    --secondary: 220 14% 94%;
-    /* Gris clair pour les éléments de fond secondaires */
-    --secondary-foreground: 222 47% 11%;
+    /* Brown — textes */
+    --brown-900:   22 52% 7%;    /* #1C1009 */
+    --brown-600:   20 33% 27%;   /* #5C3D2E */
+    --brown-400:   16 24% 49%;   /* #9B7060 */
+    --brown-200:   16 22% 76%;   /* #D4B8AE */
 
-    --muted: 220 14% 96%;
-    /* Gris très clair (ex: boutons annulés) */
-    --muted-foreground: 215 16% 47%;
-    /* Texte secondaire grisé (moins important) */
+    /* ── TOKENS SÉMANTIQUES (utilisés par Tailwind via tailwind.config.js) ── */
+    --background:          var(--cream);
+    --foreground:          var(--brown-900);
 
-    --accent: 220 14% 94%;
-    --accent-foreground: 25 95% 50%;
+    --card:                0 0% 100%;
+    --card-foreground:     var(--brown-900);
 
-    --destructive: 0 84% 60%;
-    /* Rouge pour les erreurs/boutons supprimer */
+    --popover:             0 0% 100%;
+    --popover-foreground:  var(--brown-900);
+
+    /* Primary = Terracotta */
+    --primary:             var(--terra);
+    --primary-foreground:  0 0% 100%;
+    --primary-hover:       var(--terra-hover);
+    --primary-light:       var(--terra-100);
+
+    /* Secondary = Forest */
+    --secondary:           var(--forest);
+    --secondary-foreground: 0 0% 100%;
+
+    /* Accent = Saffron */
+    --accent:              var(--saffron);
+    --accent-foreground:   var(--brown-900);
+    --accent-light:        var(--saffron-100);
+
+    /* Muted = cream-200 */
+    --muted:               var(--cream-200);
+    --muted-foreground:    var(--brown-400);
+
+    --destructive:         0 72% 51%;
     --destructive-foreground: 0 0% 100%;
 
-    --success: 142 76% 36%;
-    /* Vert pour le succès */
-    --success-foreground: 0 0% 100%;
+    --success:             var(--forest);
+    --success-foreground:  0 0% 100%;
 
-    --warning: 38 92% 50%;
-    /* Jaune pour les alertes */
-    --warning-foreground: 0 0% 100%;
+    --warning:             var(--saffron);
+    --warning-foreground:  var(--brown-900);
 
-    --border: 220 13% 87%;
-    /* Couleur des bordures grises */
-    --input: 220 13% 91%;
-    /* Fond des champs de texte */
-    --ring: 25 95% 53%;
-    /* Couleur du halo quand on clique (Orange) */
+    --border:              var(--cream-200);
+    --input:               var(--cream-200);
+    --ring:                var(--terra);
 
-    /* Effet de "verre" (Glassmorphism) */
-    --glass-bg: 0 0% 100%;
-    /* Le fond de notre verre est blanc */
-    --glass-border: 220 13% 87%;
+    /* ── TYPOGRAPHIE ───────────────────────────────────────────────────── */
+    --font-display: 'Fraunces', Georgia, serif;
+    --font-ui:      'Outfit', system-ui, sans-serif;
 
-    /* Dégradés personnalisés */
-    --gradient-primary: linear-gradient(135deg, hsl(25 95% 53%), hsl(25 95% 63%));
-    --gradient-dark: linear-gradient(180deg, hsl(0 0% 98%), hsl(0 0% 95%));
-    --gradient-glow: radial-gradient(circle at center, hsl(25 95% 53% / 0.1), transparent 70%);
+    /* ── GÉOMÉTRIE ─────────────────────────────────────────────────────── */
+    --radius-sm: 8px;
+    --radius:    14px;
+    --radius-lg: 22px;
 
-    /* Ombres personnalisées pour donner de la profondeur */
-    --shadow-sm: 0 1px 3px hsl(0 0% 0% / 0.08);
-    /* Petite ombre */
-    --shadow-md: 0 4px 12px hsl(0 0% 0% / 0.1);
-    /* Ombre moyenne */
-    --shadow-lg: 0 8px 24px hsl(0 0% 0% / 0.12);
-    /* Grosse ombre */
-    --shadow-glow: 0 0 48px hsl(25 95% 53% / 0.15);
-    /* Ombre luisante orange */
+    /* ── OMBRES CHAUDES ────────────────────────────────────────────────── */
+    /* L'ombre "tinte" légèrement terra — effet signature Ubuntu Warm */
+    --shadow-warm: 0 4px 24px hsl(var(--terra) / 0.12);
+    --shadow-card: 0 2px 12px hsl(var(--brown-900) / 0.06);
+    --shadow-md:   0 4px 12px hsl(var(--brown-900) / 0.10);
+    --shadow-lg:   0 8px 24px hsl(var(--brown-900) / 0.12);
 
     color-scheme: light;
-    /* Indique au navigateur d'utiliser le mode "clair" pour la scrollbar etc. */
-    --radius: 0.875rem;
-    /* Arrondi global des bords (14px) */
   }
 
-  /* 
-   * THEME SOMBRE (Dark Mode) 🌙
-   * S'active quand un parent possède l'attribut data-theme="dark" ou class="dark"
-   */
+  /* ── DARK MODE ──────────────────────────────────────────────────────── */
   .dark {
-    --background: 224 30% 8%;
-    --foreground: 210 40% 96%;
-    --card: 224 28% 12%;
-    --card-foreground: 210 40% 96%;
-    --glass-bg: 224 28% 13%;
-    --glass-border: 224 28% 28%;
-    --border: 224 28% 22%;
-    --muted-foreground: 217 20% 55%;
+    --background:      22 30% 8%;
+    --foreground:      34 30% 92%;
+
+    --card:            22 25% 12%;
+    --card-foreground: 34 30% 92%;
+
+    --muted:           22 20% 18%;
+    --muted-foreground: 16 15% 55%;
+
+    --border:          22 20% 22%;
+    --input:           22 20% 18%;
 
     color-scheme: dark;
   }
 }
 
 /* ==========================================================================
-   AGUN DESIGN SYSTEM - CLASSES DE BASE 🛠️
+   STYLES DE BASE
    ========================================================================== */
 @layer base {
   * {
-    /* Automatiquement, chaque bordure utilisera la couleur "border" de notre thème */
     @apply border-border;
   }
 
+  html {
+    font-family: var(--font-ui);
+  }
+
   body {
-    /* On applique le fond (background) et la couleur de texte (foreground) de notre thème */
-    /* antialiased: rend les textes plus lisses/nets sur certains écrans */
     @apply bg-background text-foreground antialiased;
+  }
+
+  /* Titres — Fraunces (serif chaleureux) */
+  h1, h2, h3 {
+    font-family: var(--font-display);
+    @apply font-semibold tracking-tight;
+  }
+
+  h4, h5, h6 {
+    font-family: var(--font-ui);
+    @apply font-semibold;
+  }
+
+  /* Focus ring terra */
+  :focus-visible {
+    outline: 2px solid hsl(var(--terra));
+    outline-offset: 2px;
   }
 }
 
 /* ==========================================================================
-   AGUN DESIGN SYSTEM - UTILITAIRES CSS & AMELIORATIONS 🪄
+   UTILITAIRES UBUNTU WARM
    ========================================================================== */
 @layer utilities {
 
-  /* La classe ".glass" fait cet effet miroir semi-transparent (glassmorphism) */
-  .glass {
-    background: hsl(var(--glass-bg) / 0.6);
-    /* Fond semi-transparent */
-    backdrop-filter: blur(20px) saturate(180%);
-    /* Floute ce qui est derriere, et le rend plus vif */
-    border: 1px solid hsl(var(--glass-border) / 0.3);
-    box-shadow: var(--shadow-md);
-  }
+  /* ── Typographie ─────────────────────────────────────────────────────── */
+  .font-display { font-family: var(--font-display); }
+  .font-ui      { font-family: var(--font-ui); }
 
-  /* Même chose mais avec un effet quand on passe la souris dessus */
-  .glass-hover {
-    @apply glass transition-all duration-300;
-  }
-
-  .glass-hover:hover {
-    background: hsl(var(--glass-bg) / 0.8);
-    transform: translateY(-2px);
-    /* Se soulève légèrement */
-    box-shadow: var(--shadow-lg);
-    /* L'ombre grandit */
-  }
-
-  /* Utilitaire pour mettre un dégradé de couleur SUR le texte ! */
-  .gradient-text {
-    background: var(--gradient-primary);
-    /* Fond orange dégradé */
+  /* Texte en dégradé terra */
+  .text-gradient {
+    background: linear-gradient(135deg, hsl(var(--terra)), hsl(var(--saffron)));
     -webkit-background-clip: text;
-    /* Applique le fond UNIQUEMENT sur la forme des lettres */
     -webkit-text-fill-color: transparent;
-    /* Rend le texte lui-même transparent (on voit le fond à travers) */
     background-clip: text;
   }
 
-  /* Classes pour appeler nos animations */
-  .animate-fade-in {
-    animation: fadeIn 0.6s ease-out;
+  /* ── Ombres ──────────────────────────────────────────────────────────── */
+  .shadow-warm { box-shadow: var(--shadow-warm); }
+  .shadow-card { box-shadow: var(--shadow-card); }
+
+  /* ── Glassmorphism chaud ─────────────────────────────────────────────── */
+  .glass {
+    background: hsl(0 0% 100% / 0.7);
+    backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid hsl(var(--cream-200) / 0.6);
+    box-shadow: var(--shadow-card);
   }
 
-  .animate-slide-up {
-    animation: slideUp 0.6s ease-out;
+  .glass-hover {
+    background: hsl(0 0% 100% / 0.7);
+    backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid hsl(var(--cream-200) / 0.6);
+    box-shadow: var(--shadow-card);
+    transition: all 0.3s ease;
   }
 
-  .animate-scale-in {
-    animation: scaleIn 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  .glass-hover:hover {
+    background: hsl(0 0% 100% / 0.9);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-warm);
   }
+
+  /* ── Animations ──────────────────────────────────────────────────────── */
+  .animate-fade-in   { animation: fadeIn 0.6s ease-out; }
+  .animate-slide-up  { animation: slideUp 0.6s ease-out; }
+  .animate-scale-in  { animation: scaleIn 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55); }
 }
 
 /* ==========================================================================
-   AGUN DESIGN SYSTEM - DEFINITIONS DES ANIMATIONS 🎬
+   ANIMATIONS
    ========================================================================== */
 @keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-
-  to {
-    opacity: 1;
-  }
+  from { opacity: 0; }
+  to   { opacity: 1; }
 }
 
 @keyframes slideUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-
-  /* Démarre vers le bas */
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  /* Remonte à sa place initiale */
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes scaleIn {
-  from {
-    opacity: 0;
-    transform: scale(0.9);
-  }
-
-  /* Démarre un peu plus petit */
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-
-  /* Grossit jusqu'à sa taille normale */
+  from { opacity: 0; transform: scale(0.9); }
+  to   { opacity: 1; transform: scale(1); }
 }
